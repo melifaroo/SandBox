@@ -1,0 +1,25 @@
+<template>
+  <div class="deleteblogger">
+    <bloggerdetails />
+    <ul>
+      <a class="btn btn-secondary" v-bind:href="'/sandbox/blogging/bloggers'">Cancel</a>
+      <a class="btn btn-danger" @click="deleteBlogger(this.$route.params.id)">Confirm Delete</a>
+    </ul>
+  </div>
+</template>
+
+<script>
+import BloggerDetails from "../../components/BloggerDetails.vue";
+import bloggingService from '../..'
+
+export default {
+  components: {
+    bloggerdetails: BloggerDetails,
+  },
+  methods: {
+    deleteBlogger(id) {
+      bloggingService.deleteBlogger(id).then( this.$router.push("/sandbox/blogging/bloggers") ).catch( error => console.log(error) );
+    },
+  },
+};
+</script>
