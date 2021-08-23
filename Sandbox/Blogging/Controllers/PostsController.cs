@@ -44,9 +44,8 @@ namespace WordsApp.Sandbox.Blogging.Controllers
                 return NotFound();
             }
 
-            var post = await _context.Posts.FindAsync(id);
-            //var person = await _context.People
-            //    .FirstOrDefaultAsync(m => m.PersonId == id);
+            var post = await _context.Posts.Include(p => p.Blog).Include(p => p.Blogger).SingleOrDefaultAsync(p => p.PostId == id);
+
             if (post == null)
             {
                 return NotFound();

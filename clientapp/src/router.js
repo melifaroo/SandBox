@@ -102,6 +102,11 @@ const routes = [
         component: () => import('@/sandbox/blogging/views/blogs/Blog.vue')
     },
     {
+        path: "/sandbox/blogging/posts/:id",
+        name: "Post",
+        component: () => import('@/sandbox/blogging/views/posts/Post.vue')
+    },
+    {
         path: "/sandbox/blogging/blogs",
         name: "Blogs",
         component: () => import('@/sandbox/blogging/views/blogs/Blogs.vue')

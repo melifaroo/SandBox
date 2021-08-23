@@ -7,7 +7,7 @@
           <input type="text" class="form-control"  id="NickName"  v-model="Blogger.nickName" placeholder="Enter NickName" />
         </div>
         <ul>
-          <a class="btn btn-secondary" v-bind:href="'/sandbox/blogging/bloggers'">Return</a>
+          <a class="btn btn-secondary" v-bind:href="'/sandbox/blogging/bloggers'">All bloggers</a>
           <button type="submit" class="btn btn-info">Save</button>
         </ul>
       </form>

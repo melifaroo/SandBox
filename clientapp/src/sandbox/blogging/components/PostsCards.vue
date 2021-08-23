@@ -56,7 +56,7 @@ export default {
   },
   computed: {
     pageCount() {
-        return Math.ceil(this.posts.length / this.perPage);
+      return Math.ceil(this.posts.length / this.perPage);
     },
     currentPageItems() {
       return this.posts.slice( (this.currentPage-1)*this.perPage, Math.min( this.currentPage*this.perPage, this.posts.length ) );

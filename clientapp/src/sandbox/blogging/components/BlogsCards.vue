@@ -1,6 +1,6 @@
 <template>
 
-  <div class="card-deck flex-wrap" style="max-width: 900px; margin: auto;" v-if="blogs && blogs.length">
+  <div class="card-deck flex-wrap" style="max-width: 700px; margin: auto;" v-if="blogs && blogs.length">
     <div v-for="blog of currentPageItems" v-bind:key="blog">
       <div class="card bg-light mb-3" style="width=16rem;">
         <div class="card-header">

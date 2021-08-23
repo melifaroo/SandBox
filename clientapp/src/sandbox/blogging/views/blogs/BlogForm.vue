@@ -7,7 +7,7 @@
           <input type="text" class="form-control"  id="url"  v-model="Blog.url" placeholder="Enter blog title" />
         </div>
         <ul>
-          <a class="btn btn-secondary" href="/sandbox/blogging/blogs">Return</a>
+          <a class="btn btn-secondary" href="/sandbox/blogging/blogs">All blogs</a>
           <button type="submit" class="btn btn-info">Save</button>
         </ul>
       </form>

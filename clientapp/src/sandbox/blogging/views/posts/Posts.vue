@@ -30,7 +30,7 @@ export default {
     };
   },
   async beforeCreate() {
-      await bloggingService.getPosts().then( result => this.posts = result).catch((error) => console.log(error));   
+      await bloggingService.getPosts().then( result => this.posts = result ).catch((error) => console.log(error));   
   },
   components :{
       postslist,
