@@ -1,21 +1,18 @@
 <template>
   <div class="blog">
     <blogdetails />
-    <ul>
-      <a class="btn btn-secondary" onclick="history.back()">Return</a>
-      <a class="btn btn-primary" @click="createPostToBlog(this.$route.params.id)">Create post</a>
-    </ul>
-  </div>
-  <div class="blog-posts">
-    <h1>Posts in blog</h1>        
-    <postslist :posts="posts" />
+  </div> 
+  <a class="btn btn-success" href="/sandbox/blogging/addpost">Create new post</a>    
+  <div class="blog-posts">      
+    <postscards :posts="posts" />
     <!--a class="btn btn-success" href="/addpost">Write new post</a-->
   </div>
 </template>
 
 <script>
-import postslist from "../../components/PostsList.vue"
+import postscards from "../../components/PostsCards.vue"
 import blogdetails from "../../components/BlogDetails.vue"
+import bloggingService from '../..'
 
 export default {
   data() {
@@ -23,27 +20,12 @@ export default {
       posts: [],
     };
   },
-  created() {
-      this.getBlogPosts();      
+  async beforeCreate() {
+      await bloggingService.getBlogPosts(this.$route.params.id).then(  result => this.posts = result  ).catch((error) => console.log(error));     
   },
   components :{
-      postslist,
+      postscards,
       blogdetails
-  },
-  methods: {
-    getBlogPosts() {
-        fetch("https://localhost:5001/sandbox/blogging/blogs/"+this.$route.params.id+"/posts")
-          .then(async (response) => {
-            const data = await response.json();
-            if (!response.ok) {
-              // get error message from body or default to response statusText
-              const error = (data && data.message) || response.statusText;
-              return Promise.reject(error);
-            }
-            this.posts = data;
-          })
-          .catch((error) => console.log(error));
-    }
   },
 };
 </script>

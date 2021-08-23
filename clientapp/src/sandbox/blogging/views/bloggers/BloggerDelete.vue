@@ -17,8 +17,8 @@ export default {
     bloggerdetails: BloggerDetails,
   },
   methods: {
-    deleteBlogger(id) {
-      bloggingService.deleteBlogger(id).then( this.$router.push("/sandbox/blogging/bloggers") ).catch( error => console.log(error) );
+    async deleteBlogger(id) {
+      await bloggingService.deleteBlogger(id).then( this.$router.push("/sandbox/blogging/bloggers") ).catch( error => console.log(error) );
     },
   },
 };

@@ -2,11 +2,11 @@
   <div class="blogger-details">
     <h4>Blogger {{ Blogger.nickName }}  
         <samp v-if="bloggerPostsCount>0">
-            has <a href=#>{{ bloggerPostsCount }} Post<samp v-show="bloggerPostsCount > 1">s</samp></a> 
-            in <a href=#>{{ bloggerBlogsCount }} Blog<samp v-show="bloggerBlogsCount > 1">s</samp></a>
+            has <a :href="'/sandbox/blogging/bloggers/'+this.$route.params.id+'/posts/'">{{ bloggerPostsCount }} Post<samp v-show="bloggerPostsCount > 1">s</samp></a> 
+            in <a :href="'/sandbox/blogging/bloggers/'+this.$route.params.id+'/blogs/'">{{ bloggerBlogsCount }} Blog<samp v-show="bloggerBlogsCount > 1">s</samp></a>
         </samp>
         <samp v-else>has no posts</samp>
-    </h4>
+    </h4>    
   </div>
 </template>
 

@@ -13,7 +13,7 @@
           <th scope="row" style="display:none;">{{ blog.blogId }}</th>
           <td><a class="btn btn-link" v-bind:href="'/sandbox/blogging/Blogs/'+ blog.blogId">{{ blog.url }}</a></td>
           <td>
-            <a class="btn btn-primary" v-bind:href="'/sandbox/blogging/CreatePostToBlog/'+ blog.blogId">Write new post</a>
+            <a class="btn btn-warning" v-bind:href="'/sandbox/blogging/EditBlog/'+ blog.blogId">Rename</a>
             <a class="btn btn-danger" v-bind:href="'/sandbox/blogging/DeleteBlog/'+ blog.blogId">Delete</a>      
           </td>
         </tr>

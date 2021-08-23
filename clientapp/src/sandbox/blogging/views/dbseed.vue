@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import bloggingService from '..'
 export default {
   name: "DBSeed",
   data() {
@@ -45,18 +46,15 @@ export default {
   },
   methods: {
       async seedDB(){
-          
-        let response = await fetch("https://localhost:5001/sandbox/blogging/blogs/seed?blogCount=" + this.blogCount +"&bloggerCount=" +this.bloggerCount+ "&postCount=" + this.postCount, { method: "POST" });
+        bloggingService.seedSandBoxDB(this.blogCount, this.bloggerCount, this.postCount)
+        .then( result => {
+          this.bloggerCount= 0;
+          this.postCount = 0;
+          this.blogCount = 0;
+          console.log(result)
+        })
+        .catch((error) => console.log(error));
         
-        if (!response.ok) {
-            const error =  response.statusText;
-            return Promise.reject(error);
-        }
-        
-        this.bloggerCount= 0;
-        this.postCount = 0;
-        this.blogCount = 0;
-        this.result = response.statusText;
       },
 
   },

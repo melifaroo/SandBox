@@ -44,7 +44,8 @@ namespace WordsApp
             services.AddControllers().
                 AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
             services.AddDbContext<SandBoxContext>(
-                options => options.UseSqlServer(_SandBoxDBConnectionString)); 
+                options => options.UseSqlServer(_SandBoxDBConnectionString));
+            //services.AddSpaStaticFiles(options => options.RootPath = "clientapp/dist");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +68,16 @@ namespace WordsApp
             {
                 endpoints.MapControllers();
             });
+
+            //app.UseSpa(spa =>
+            //{
+            //    spa.Options.SourcePath = "clientapp";
+            //    if (env.IsDevelopment())
+            //    {
+            //        // Launch development server for Vue.js
+            //        spa.UseVueDevelopmentServer();
+            //    }
+            //});
         }
     }
 }

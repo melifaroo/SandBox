@@ -11,7 +11,7 @@ using WordsApp.Sandbox.Blogging.Model;
 namespace WordsApp.Sandbox.Blogging.Controllers
 {
     [ApiController]
-    [Route("sandbox/blogging/[controller]")]
+    [Route("api/sandbox/blogging/[controller]")]
     [EnableCors("_myAllowSpecificOrigins")]
     public class BloggersController : Controller
     {
@@ -134,11 +134,45 @@ namespace WordsApp.Sandbox.Blogging.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var person = await _context.Bloggers.FindAsync(id);
-            _context.Bloggers.Remove(person);
+            var blogger = await _context.Bloggers.FindAsync(id);
+            var bloggerPosts = await _context.Posts.Where(p => p.Blogger.BloggerId == id).ToListAsync();
+            _context.Posts.RemoveRange(bloggerPosts);
+            _context.Bloggers.Remove(blogger);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+        [Route("{id}/blogs")]
+        // GET: Bloggers/5/blogs
+        public async Task<IActionResult> GetBloggerBlogs(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            //await _context.Posts.Where(p => p.Blogger.BloggerId == id)
+            return Json(await _context.Posts.Where(p => p.Blogger.BloggerId == id).Select(p => p.Blog).Distinct().ToListAsync());
+        }
+
+        [Route("{id}/posts")]
+        // GET: Bloggers/5/posts
+        public async Task<IActionResult> GetBloggerPosts(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            
+            return Json(await _context.Posts
+                .Join(_context.Bloggers, p => p.Blogger.BloggerId, b => b.BloggerId, 
+                (p, b) => new { Post = p,  Blogger = b })
+                .Join(_context.Blogs, p => p.Post.Blog.BlogId, b => b.BlogId,
+                (p, b) => new { PostId = p.Post.PostId, Title = p.Post.Title, Content = p.Post.Content, BloggerId = p.Blogger.BloggerId, Blogger = p.Blogger.NickName, BlogId = b.BlogId, Blog = b.Url })
+                .Where(p => p.BloggerId == id).ToListAsync()
+                );
+        }
+
 
         private bool PersonExists(int id)
         {

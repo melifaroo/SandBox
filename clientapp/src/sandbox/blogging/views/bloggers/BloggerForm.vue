@@ -7,7 +7,7 @@
           <input type="text" class="form-control"  id="NickName"  v-model="Blogger.nickName" placeholder="Enter NickName" />
         </div>
         <ul>
-          <a class="btn btn-secondary" href="history.back()">Return</a>
+          <a class="btn btn-secondary" v-bind:href="'/sandbox/blogging/bloggers'">Return</a>
           <button type="submit" class="btn btn-info">Save</button>
         </ul>
       </form>
@@ -34,8 +34,8 @@ export default {
     }    
   },
   methods: {   
-    createOrUpdateBlogger() {
-      bloggingService.createOrUpdateBlogger(this.Blogger).then( this.$router.push("/sandbox/blogging/bloggers") ).catch( error => console.log(error) );
+    async createOrUpdateBlogger() {
+      await bloggingService.createOrUpdateBlogger(this.Blogger).then( this.$router.push("/sandbox/blogging/bloggers") ).catch( error => console.log(error) );
     }
   },
 };

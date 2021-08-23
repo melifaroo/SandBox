@@ -1,12 +1,11 @@
 <template>
   <div class="blog-details">
-    <h4>Blog {{ blog.url }}  
+    <h1>{{ blog.url }} </h1>
         <samp v-if="blogPostsCount>0">
-            has <a href=#>{{ blogPostsCount }} Post<samp v-show="blogPostsCount > 1">s</samp></a> 
-            by <a href=#>{{ blogAuthorsCount }} Blogger<samp v-show="blogAuthorsCount > 1">s</samp></a>
+            {{ blogPostsCount }} Post<samp v-show="blogPostsCount > 1">s</samp>
+            by {{ blogAuthorsCount }} Blogger<samp v-show="blogAuthorsCount > 1">s</samp>
         </samp>
-        <samp v-else>has no posts</samp>
-    </h4>
+        <samp v-else>has no posts yet</samp>
   </div>
 </template>
 

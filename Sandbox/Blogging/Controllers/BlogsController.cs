@@ -13,7 +13,7 @@ using WordsApp.Sandbox.Blogging.Model;
 namespace WordsApp.Sandbox.Blogging.Controllers
 {
     [ApiController]
-    [Route("sandbox/blogging/[controller]")]
+    [Route("api/sandbox/blogging/[controller]")]
     [EnableCors("_myAllowSpecificOrigins")]
     public class BlogsController : Controller
     {
@@ -53,14 +53,21 @@ namespace WordsApp.Sandbox.Blogging.Controllers
         }
 
         [Route("{id}/posts")]
-        // GET: Bloggers/5/posts
+        // GET: Blogs/5/posts
         public async Task<IActionResult> GetBlogPosts(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            return Json(await _context.Posts.Where(p => p.Blog.BlogId == id).Include(p => p.Blogger).Include(p => p.Blog).ToListAsync());
+
+            return Json(await _context.Posts
+                .Join(_context.Bloggers, p => p.Blogger.BloggerId, b => b.BloggerId,
+                (p, b) => new { Post = p, Blogger = b })
+                .Join(_context.Blogs, p => p.Post.Blog.BlogId, b => b.BlogId,
+                (p, b) => new { PostId = p.Post.PostId, Title = p.Post.Title, Content = p.Post.Content, BloggerId = p.Blogger.BloggerId, Blogger = p.Blogger.NickName, BlogId = b.BlogId, Blog = b.Url })
+                .Where(p => p.BlogId == id).ToListAsync()
+                );
         }
 
 
@@ -127,11 +134,10 @@ namespace WordsApp.Sandbox.Blogging.Controllers
             _context.SaveChanges();
 
             int[] bloggerIds = new int[] { 0 };
-
             var postFaker =
-                new Faker<Post>()
+                new Faker<Post>(locale : "en")
                 .RuleFor(x => x.Title, f => f.Random.Word())
-                .RuleFor(x => x.Content, f => f.Random.Words())
+                .RuleFor(x => x.Content, f => f.Lorem.Sentences(5))
                 .RuleFor(x => x.Blogger, f => f.Random.ArrayElement(_context.Bloggers.ToArray()))
                 .RuleFor(x => x.Blog, f => f.Random.ArrayElement(_context.Blogs.ToArray()));
             var posts = postFaker.Generate(postCount);
@@ -143,7 +149,72 @@ namespace WordsApp.Sandbox.Blogging.Controllers
 
             _context.SaveChanges();
 
-            return Ok();
+            return Ok("Succesfully seeded data, randomly created " + blogCount + " blogs, " + bloggerCount + " bloggers and "+ postCount + " posts");
+        }
+
+
+        // POST: Blogs/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [Route("edit/{id}")]
+        public async Task<IActionResult> Update(int id, [Bind("BlogId,Url")] Blog blog)
+        {
+            if (id != blog.BlogId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(blog);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!BlogExists(blog.BlogId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            return Json(blog);
+        }
+
+        // POST: Blogs/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Route("create")]
+        [HttpPost]
+        public async Task<IActionResult> Create([Bind("BlogId,Url")] Blog blog)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(blog);
+                await _context.SaveChangesAsync();
+                return Ok(blog.BlogId);
+            }
+            return null;
+        }
+
+        // POST: Blogs/Delete/5
+        [Route("delete/{id}")]
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var blog = await _context.Blogs.FindAsync(id);
+            var blogPosts = await _context.Posts.Where(p => p.Blog.BlogId == id).ToListAsync();
+            _context.Posts.RemoveRange(blogPosts);
+            _context.Blogs.Remove(blog);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         private bool BlogExists(int id)

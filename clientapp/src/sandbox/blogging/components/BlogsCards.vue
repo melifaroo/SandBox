@@ -1,6 +1,6 @@
 <template>
 
-  <div class="card-deck flex-wrap" v-if="blogs && blogs.length">
+  <div class="card-deck flex-wrap" style="max-width: 900px; margin: auto;" v-if="blogs && blogs.length">
     <div v-for="blog of currentPageItems" v-bind:key="blog">
       <div class="card bg-light mb-3" style="width=16rem;">
         <div class="card-header">
@@ -14,14 +14,14 @@
             :alt="'https://loremflickr.com/150/100/' + word + '?lock=' + blog.blogId"/></a>
         <div class="card-body">
           <p>
-            <a class="btn btn-primary" v-bind:href="'/sandbox/blogging/CreatePostToBlog/' + blog.blogId">Write new post</a>
+            <a class="btn btn-warning" v-bind:href="'/sandbox/blogging/EditBlog/' + blog.blogId">Rename</a>
             <a class="btn btn-danger" v-bind:href="'/sandbox/blogging/DeleteBlog/' + blog.blogId">Delete</a>
           </p>
         </div>
       </div>
     </div>
   </div>
-  <nav>
+  <nav v-if="pageCount>1">
     <ul class="pagination justify-content-center">
       <li v-bind:class="(currentPage<2)?'page-item disabled':'page-item'">
         <a class="page-link" @click="currentPage--" tabindex="-1" aria-disabled="true" >Previous</a>

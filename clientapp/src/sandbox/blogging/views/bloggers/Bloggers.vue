@@ -1,9 +1,7 @@
 <template>
   <div class="bloggers">
-    <h1>Bloggers</h1>   
-    <h2>count = {{bloggers.length}}</h2>  
-    <a class="btn btn-success" href="/sandbox/blogging/addblogger">Add blogger</a>     
-    <h2>by scrolling table</h2>   
+    <h1>Bloggers ({{bloggers.length}})</h1>   
+    <a class="btn btn-success" href="/sandbox/blogging/addblogger">Add blogger</a>        
     <bloggerslist :bloggers="bloggers" />
   </div>
 </template>
@@ -18,8 +16,8 @@ export default {
       bloggers: [],
     };
   },
-  created() {
-      bloggingService.getBloggers().then( result => this.bloggers = result ).catch( error => console.log(error) );     
+  async beforeCreate() {
+    await bloggingService.getBloggers().then( result => this.bloggers = result ).catch( error => console.log(error) );     
   },
   components :{
       bloggerslist  

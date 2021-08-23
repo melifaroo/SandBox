@@ -1,7 +1,8 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <h1><p><img alt="Dot Net logo" src="../assets/NET_Core_Logo.png" > + <img alt="Vue logo" src="../assets/logo.png" ></p></h1>
     <Startpage msg="Welcome"/>
+    <h2><a href="/sandbox/blogging/blogs"> Blogs simulation, demo app: DotNet Core WebAPI (EFCore+SQL) + Vue </a></h2>
   </div>
 </template>
 
