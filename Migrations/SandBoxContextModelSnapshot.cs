@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WordsApp.Sandbox;
+using Sandbox;
 
-namespace WordsApp.Migrations
+namespace Migrations
 {
     [DbContext(typeof(SandBoxContext))]
     partial class SandBoxContextModelSnapshot : ModelSnapshot

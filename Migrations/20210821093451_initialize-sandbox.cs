@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace WordsApp.Migrations
+namespace Migrations
 {
     public partial class initializesandbox : Migration
     {

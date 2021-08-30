@@ -1,21 +1,20 @@
 <template>
-
   <div class="card-deck flex-wrap" style="max-width: 700px; margin: auto;" v-if="blogs && blogs.length">
     <div v-for="blog of currentPageItems" v-bind:key="blog">
       <div class="card bg-light mb-3" style="width=16rem;">
         <div class="card-header">
           <h5 class="card-title">
-            <a v-bind:href="'/sandbox/blogging/Blogs/' + blog.blogId">{{blog.url}}</a>
+            <a v-bind:href="'/blogs/' + blog.blogId">{{blog.url}}</a>
           </h5>
         </div>
-        <a v-bind:href="'/sandbox/blogging/Blogs/' + blog.blogId"><img
+        <a v-bind:href="'/blogs/' + blog.blogId"><img
             class="card-img-top"
             :src="'https://loremflickr.com/150/100/' + (word = parseName(blog.url)) + '?lock=' + blog.blogId"
             :alt="'https://loremflickr.com/150/100/' + word + '?lock=' + blog.blogId"/></a>
         <div class="card-body">
           <p>
-            <a class="btn btn-warning" v-bind:href="'/sandbox/blogging/EditBlog/' + blog.blogId">Rename</a>
-            <a class="btn btn-danger" v-bind:href="'/sandbox/blogging/DeleteBlog/' + blog.blogId">Delete</a>
+            <a class="btn btn-warning" v-bind:href="'/blogs/edit/' + blog.blogId">Rename</a>
+            <a class="btn btn-danger" v-bind:href="'/blogs/delete/' + blog.blogId">Delete</a>
           </p>
         </div>
       </div>

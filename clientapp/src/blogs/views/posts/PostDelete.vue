@@ -2,7 +2,7 @@
   <div class="deletepost">
     <postdetails />
     <ul>
-      <a class="btn btn-secondary" v-bind:href="'/sandbox/blogging/posts'">Cancel</a>
+      <a class="btn btn-secondary" href="/blogs/posts">Cancel</a>
       <a class="btn btn-danger" @click="deletePost(this.$route.params.id)">Confirm Delete</a>
     </ul>
   </div>
@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     async deletePost(id) {
-      await bloggingService.deletePost(id).then( this.$router.push("/sandbox/blogging/posts") ).catch( error => console.log(error) );
+      await bloggingService.deletePost(id).then( this.$router.push("/blogs/posts") ).catch( error => console.log(error) );
     },
   },
 };

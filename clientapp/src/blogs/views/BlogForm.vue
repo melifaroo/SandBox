@@ -7,7 +7,7 @@
           <input type="text" class="form-control"  id="url"  v-model="Blog.url" placeholder="Enter blog title" />
         </div>
         <ul>
-          <a class="btn btn-secondary" href="/sandbox/blogging/blogs">All blogs</a>
+          <a class="btn btn-secondary" href="/blogs">All blogs</a>
           <button type="submit" class="btn btn-info">Save</button>
         </ul>
       </form>
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import bloggingService from '../..'
+import bloggingService from '..'
 
 export default {
   name: "BlogForm",
@@ -35,7 +35,7 @@ export default {
   },
   methods: {   
     async createOrUpdateBlog() {
-      await bloggingService.createOrUpdateBlog(this.Blog).then( this.$router.push("/sandbox/blogging/blogs") ).catch( error => console.log(error) );
+      await bloggingService.createOrUpdateBlog(this.Blog).then( this.$router.push("/blogs") ).catch( error => console.log(error) );
     }
   },
 };

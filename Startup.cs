@@ -8,19 +8,19 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Sandbox;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WordsApp.Sandbox;
 
-namespace WordsApp
+namespace SandBox
 {
     public class Startup
     {
         readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         readonly string _SandBoxDBConnectionString = @"Server=(localdb)\mssqllocaldb;Database=SandBox";
-        //readonly string _WordAppDBConnectionString = @"Server=(localdb)\mssqllocaldb;Database=WordApp";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -45,7 +45,6 @@ namespace WordsApp
                 AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
             services.AddDbContext<SandBoxContext>(
                 options => options.UseSqlServer(_SandBoxDBConnectionString));
-            //services.AddSpaStaticFiles(options => options.RootPath = "clientapp/dist");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -68,16 +67,6 @@ namespace WordsApp
             {
                 endpoints.MapControllers();
             });
-
-            //app.UseSpa(spa =>
-            //{
-            //    spa.Options.SourcePath = "clientapp";
-            //    if (env.IsDevelopment())
-            //    {
-            //        // Launch development server for Vue.js
-            //        spa.UseVueDevelopmentServer();
-            //    }
-            //});
         }
     }
 }

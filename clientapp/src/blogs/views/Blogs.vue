@@ -1,7 +1,7 @@
 <template>
-  <div class="Vlogs">
+  <div class="Blogs">
     <h1>Blogs ({{blogs.length}})</h1>
-    <a class="btn btn-success" href="/sandbox/blogging/addblog">Create new blog</a>     
+    <a class="btn btn-success" href="/blogs/create">Create new blog</a>     
     <form>
     <div class="form-switch">
       <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" v-model="layout" >
@@ -20,9 +20,9 @@
 
 
 <script>
-import blogslist from "../../components/BlogsList.vue"
-import blogscards from "../../components/BlogsCards.vue"
-import bloggingService from '../..'
+import blogslist from "../components/BlogsList.vue"
+import blogscards from "../components/BlogsCards.vue"
+import bloggingService from '..'
 
 export default {
   data() {

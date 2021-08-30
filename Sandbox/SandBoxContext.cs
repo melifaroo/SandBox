@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WordsApp.Sandbox.Library.Model;
-using WordsApp.Sandbox.Blogging.Model;
+using Sandbox.Library.Model;
+using Sandbox.Blogging.Model;
 
-namespace WordsApp.Sandbox
+namespace Sandbox
 {
     public class SandBoxContext : DbContext
     {

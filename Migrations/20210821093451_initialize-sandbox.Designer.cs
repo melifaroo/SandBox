@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using WordsApp.Sandbox;
+using Sandbox;
 
-namespace WordsApp.Migrations
+namespace Migrations
 {
     [DbContext(typeof(SandBoxContext))]
     [Migration("20210821093451_initialize-sandbox")]

@@ -10,7 +10,7 @@
           <input type="text" class="form-control"  id="content"  v-model="Post.content" placeholder="Post content" />
         </div>
         <ul>
-          <a class="btn btn-secondary" href="/sandbox/blogging/posts">Return</a>
+          <a class="btn btn-secondary" href="/blogs/posts">Return</a>
           <button type="submit" class="btn btn-info">Save</button>
         </ul>
       </form>
@@ -39,7 +39,7 @@ export default {
   },
   methods: {   
     async updatePost() {
-      await bloggingService.updatePost(this.Post).then( this.$router.push("/sandbox/blogging/posts") ).catch( error => console.log(error) );
+      await bloggingService.updatePost(this.Post).then( this.$router.push("/blogs/posts") ).catch( error => console.log(error) );
     }
   },
 };

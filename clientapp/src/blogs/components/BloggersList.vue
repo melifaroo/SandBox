@@ -12,10 +12,10 @@
       <tbody v-if="bloggers && bloggers.length">
         <tr  v-for="blogger of bloggers" v-bind:key="blogger">
           <th class="col-xs-3" scope="row" style="display:none;">{{ blogger.bloggerId }}</th>
-          <td class="col-xs-3"><a class="btn btn-link" v-bind:href="'/sandbox/blogging/bloggers/'+ blogger.bloggerId">{{ blogger.nickName }} </a></td>
+          <td class="col-xs-3"><a class="btn btn-link" v-bind:href="'/blogs/bloggers/'+ blogger.bloggerId">{{ blogger.nickName }} </a></td>
           <td class="col-xs-6">
-            <a class="btn btn-warning" v-bind:href="'/sandbox/blogging/EditBlogger/'+ blogger.bloggerId">Edit</a>
-            <a class="btn btn-danger" v-bind:href="'/sandbox/blogging/DeleteBlogger/'+ blogger.bloggerId">Delete</a>      
+            <a class="btn btn-warning" v-bind:href="'/blogs/bloggers/edit/'+ blogger.bloggerId">Edit</a>
+            <a class="btn btn-danger" v-bind:href="'/blogs/bloggers/delete/'+ blogger.bloggerId">Delete</a>      
           </td>
         </tr>
       </tbody>

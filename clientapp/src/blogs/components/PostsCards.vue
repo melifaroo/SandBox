@@ -4,18 +4,18 @@
       <div class="card bg-light mb-6" style="width=16rem;">
         <div class="card-header">
           <h3 class="card-title">
-            <a v-bind:href="'/sandbox/blogging/Posts/' + post.postId">{{post.title}}</a>
+            <a v-bind:href="'/blogs/posts/' + post.postId">{{post.title}}</a>
           </h3>
             <p><sub>
-              by <a v-bind:href="'/sandbox/blogging/Bloggers/' + post.bloggerId">{{post.blogger}}</a>
-              in <a v-bind:href="'/sandbox/blogging/Blogs/' + post.blogId">{{post.blog}}</a>
+              by <a v-bind:href="'/blogs/bloggers/' + post.bloggerId">{{post.blogger}}</a>
+              in <a v-bind:href="'/blogs/' + post.blogId">{{post.blog}}</a>
             </sub></p>
         </div>        
         <div class="card-body">
             <p style="text-align: left;">{{post.content}}</p>            
           <p>
-            <a class="btn btn-warning" v-bind:href="'/sandbox/blogging/editpost/' + post.postId">Edit</a>
-            <a class="btn btn-danger" v-bind:href="'/sandbox/blogging/deletepost/' + post.postId">Delete</a>
+            <a class="btn btn-warning" v-bind:href="'/blogs/posts/edit/' + post.postId">Edit</a>
+            <a class="btn btn-danger" v-bind:href="'/blogs/posts/delete/' + post.postId">Delete</a>
           </p>
         </div>
       </div>

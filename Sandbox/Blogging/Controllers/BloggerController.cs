@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using WordsApp.Sandbox.Blogging.Model;
+using Sandbox.Blogging.Model;
 
-namespace WordsApp.Sandbox.Blogging.Controllers
+namespace Sandbox.Blogging.Controllers
 {
     [ApiController]
     [Route("api/sandbox/blogging/[controller]")]

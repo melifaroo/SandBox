@@ -1,8 +1,8 @@
 ﻿import { createWebHistory, createRouter } from "vue-router";
 import Home from "@/views/Home.vue";
 import About from "@/views/About.vue";
-import PersonForm from "@/sandbox/blogging/views/bloggers/BloggerForm.vue";
-import BlogForm from "@/sandbox/blogging/views/blogs/BlogForm.vue";
+import PersonForm from "@/blogs/views/bloggers/BloggerForm.vue";
+import BlogForm from "@/blogs/views/BlogForm.vue";
 
 const routes = [
     {
@@ -15,106 +15,113 @@ const routes = [
         name: "About",
         component: About,
     },
+
     {
-        path: "/sandbox/blogging/bloggers",
-        name: "Bloggers",
-        component: () => import('@/sandbox/blogging/views/bloggers/Bloggers.vue')
-    },
-    {
-        path: "/sandbox/blogging/posts",
-        name: "Posts",
-        component: () => import('@/sandbox/blogging/views/posts/Posts.vue')
-    },
-    {
-        path: "/sandbox/blogging/addposttoblog/:id",
-        name: "PostToBlogForm",
-        component:  () => import('@/sandbox/blogging/views/posts/PostToBlogForm.vue')
-    },
-    {
-        path: "/sandbox/blogging/addpostbyblogger/:id",
-        name: "PostByBloggerForm",
-        component:  () => import('@/sandbox/blogging/views/posts/PostByBloggerForm.vue')
-    },
-    {
-        path: "/sandbox/blogging/editpost/:id",
-        name: "PostContentForm",
-        component:  () => import('@/sandbox/blogging/views/posts/PostContentForm.vue')
-    },
-    {
-        path: "/sandbox/blogging/deletepost/:id",
-        name: "PostDelete",
-        component: () => import('@/sandbox/blogging/views/posts/PostDelete.vue')
-    },
-    {
-        path: "/sandbox/blogging/addblogger",
-        name: "BloggerCreateForm",
-        component: PersonForm
-    },
-    {
-        path: "/sandbox/blogging/editblogger/:id",
-        name: "BloggerEditForm",
-        component: PersonForm
-    },
-    {
-        path: "/sandbox/blogging/deleteblogger/:id",
-        name: "BloggerDelete",
-        component: () => import('@/sandbox/blogging/views/bloggers/BloggerDelete.vue')
-    },
-    {
-        path: "/sandbox/blogging/bloggers/:id",
-        name: "Blogger",
-        component: () => import('@/sandbox/blogging/views/bloggers/Blogger.vue'),
+        path: "/blogs",
+        name: "BlogsMain",
+        component: () => import('@/blogs/BlogsApp.vue'),
         children: [
             {
-              // A will be rendered in the second <router-view>
-              // when /your-sidebar-url/a is matched
-              path: '/sandbox/blogging/bloggers/:id/blogs',
-              name: "BloggerBlogs",
-              component: () => import('@/sandbox/blogging/views/bloggers/BloggerBlogs.vue'),
+                path: "/blogs",
+                name: "Blogs",
+                component: () => import('@/blogs/views/Blogs.vue')
             },
             {
-              // A will be rendered in the second <router-view>
-              // when /your-sidebar-url/a is matched
-              path: '/sandbox/blogging/bloggers/:id/posts',
-              name: "BloggerPosts",
-              component: () => import('@/sandbox/blogging/views/bloggers/BloggerPosts.vue'),
+                path: "/blogs/create",
+                name: "BlogCreateForm",
+                component: BlogForm
             },
-        ]
+            {
+                path: "/blogs/edit/:id",
+                name: "BlogEditForm",
+                component: BlogForm
+            },
+            {
+                path: "/blogs/delete/:id",
+                name: "BlogDelete",
+                component: () => import('@/blogs/views/BlogDelete.vue')
+            },
+            {
+                path: "/blogs/:id",
+                name: "Blog",
+                component: () => import('@/blogs/views/Blog.vue')
+            },
+            {
+                path: "/blogs/:id/createpost",
+                name: "PostToBlogForm",
+                component:  () => import('@/blogs/views/BlogPostForm.vue')
+            },
+
+            {
+                path: "/blogs/posts",
+                name: "Posts",
+                component: () => import('@/blogs/views/posts/Posts.vue')
+            },
+            {
+                path: "/blogs/posts/:id",
+                name: "Post",
+                component: () => import('@/blogs/views/posts/Post.vue')
+            },
+            {
+                path: "/blogs/posts/edit/:id",
+                name: "PostContentForm",
+                component:  () => import('@/blogs/views/posts/PostContentForm.vue')
+            },
+            {
+                path: "/blogs/posts/delete/:id",
+                name: "PostDelete",
+                component: () => import('@/blogs/views/posts/PostDelete.vue')
+            },
+            
+            {
+                path: "/blogs/bloggers",
+                name: "Bloggers",
+                component: () => import('@/blogs/views/bloggers/Bloggers.vue')
+            },
+            {
+                path: "/blogs/bloggers/create",
+                name: "BloggerCreateForm",
+                component: PersonForm
+            },
+            {
+                path: "/blogs/bloggers/edit/:id",
+                name: "BloggerEditForm",
+                component: PersonForm
+            },
+            {
+                path: "/blogs/bloggers/delete/:id",
+                name: "BloggerDelete",
+                component: () => import('@/blogs/views/bloggers/BloggerDelete.vue')
+            },
+            {
+                path: "/blogs/bloggers/:id",
+                name: "Blogger",
+                component: () => import('@/blogs/views/bloggers/Blogger.vue'),
+                children: [
+                    {
+                    path: '/blogs/bloggers/:id/blogs',
+                    name: "BloggerBlogs",
+                    component: () => import('@/blogs/views/bloggers/BloggerBlogs.vue'),
+                    },
+                    {
+                    path: '/blogs/bloggers/:id/posts',
+                    name: "BloggerPosts",
+                    component: () => import('@/blogs/views/bloggers/BloggerPosts.vue'),
+                    },
+                ]
+            },
+            {
+                path: "/blogs/bloggers/:id/createpost",
+                name: "PostByBloggerForm",
+                component:  () => import('@/blogs/views/bloggers/BloggerPostForm.vue')
+            },
+    
+        ]   
     },
     {
-        path: "/sandbox/blogging/addblog",
-        name: "BlogCreateForm",
-        component: BlogForm
-    },
-    {
-        path: "/sandbox/blogging/editblog/:id",
-        name: "BlogEditForm",
-        component: BlogForm
-    },
-    {
-        path: "/sandbox/blogging/deleteblog/:id",
-        name: "BlogDelete",
-        component: () => import('@/sandbox/blogging/views/blogs/BlogDelete.vue')
-    },
-    {
-        path: "/sandbox/blogging/blogs/:id",
-        name: "Blog",
-        component: () => import('@/sandbox/blogging/views/blogs/Blog.vue')
-    },
-    {
-        path: "/sandbox/blogging/posts/:id",
-        name: "Post",
-        component: () => import('@/sandbox/blogging/views/posts/Post.vue')
-    },
-    {
-        path: "/sandbox/blogging/blogs",
-        name: "Blogs",
-        component: () => import('@/sandbox/blogging/views/blogs/Blogs.vue')
-    },
-    {
-        path: "/sandbox/blogging/DBSeed",
+        path: "/dbseed",
         name: "DBSeed",
-        component: () => import('@/sandbox/blogging/views/dbseed.vue')
+        component: () => import('@/views/DbSeed.vue')
     }
 ];
 

@@ -1,9 +1,9 @@
 <template>
   <div class="post-details">
-    <h1> <a v-bind:href="'/sandbox/blogging/Posts/' + post.postId">{{ post.title }}</a> </h1>
+    <h1> <a v-bind:href="'/blogs/posts/' + post.postId">{{ post.title }}</a> </h1>
             <p><sub>
-              by <a v-bind:href="'/sandbox/blogging/Bloggers/' + post.blogger.bloggerId">{{post.blogger.nickName}}</a>
-              in <a v-bind:href="'/sandbox/blogging/Blogs/' + post.blog.blogId">{{post.blog.url}}</a>
+              by <a v-bind:href="'/blogs/bloggers/' + post.blogger.bloggerId">{{post.blogger.nickName}}</a>
+              in <a v-bind:href="'/blogs/' + post.blog.blogId">{{post.blog.url}}</a>
             </sub></p>
   </div>
 </template>

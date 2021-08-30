@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WordsApp.Sandbox.Blogging.Model
+namespace Sandbox.Blogging.Model
 {
     [Table("blogs")]
     public class Blog

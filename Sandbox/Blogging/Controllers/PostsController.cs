@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using WordsApp.Sandbox.Blogging.Model;
+using Sandbox.Blogging.Model;
 
-namespace WordsApp.Sandbox.Blogging.Controllers
+namespace Sandbox.Blogging.Controllers
 {
     [ApiController]
     [Route("api/sandbox/blogging/[controller]")]
@@ -114,6 +114,24 @@ namespace WordsApp.Sandbox.Blogging.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // POST: Posts/Create
+        [Route("create")]
+        [HttpPost]
+        public async Task<IActionResult> Create([Bind("Title, Content, BlogId, BloggerId")] Post post)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(new Post() { 
+                    Title = post.Title,
+                    Content = post.Content,
+                    BlogId = post.BlogId,
+                    BloggerId = post.BloggerId,
+                });
+                await _context.SaveChangesAsync();
+                return Ok(post.PostId);
+            }
+            return null;
+        }
 
         private bool PostExists(int id)
         {

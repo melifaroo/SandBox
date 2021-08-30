@@ -1,5 +1,5 @@
 <template>
-  <div class="blogging">
+  <div class="dbseed">
     <ul>
       <form @submit.prevent="seedDB">
         <div class="form-row">
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import bloggingService from '..'
+import bloggingService from '../blogs'
 export default {
   name: "DBSeed",
   data() {
