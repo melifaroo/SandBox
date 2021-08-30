@@ -24,14 +24,12 @@ namespace WordsApp.Sandbox.Blogging.Controllers
             _context = context;
         }
 
-
         [HttpGet]
         // GET: Blogs
         public async Task<IActionResult> Index()
         {
             return Json(await _context.Blogs.ToListAsync());
         }
-
 
         [Route("{id}")]
         // GET: Blogs/5
@@ -42,9 +40,8 @@ namespace WordsApp.Sandbox.Blogging.Controllers
                 return NotFound();
             }
 
-            var blog = await _context.Blogs.FindAsync(id);
-            //var person = await _context.People
-            //    .FirstOrDefaultAsync(m => m.PersonId == id);
+            var blog = await _context.Blogs.SingleOrDefaultAsync(b => b.BlogId == id);
+
             if (blog == null)
             {
                 return NotFound();
@@ -62,12 +59,11 @@ namespace WordsApp.Sandbox.Blogging.Controllers
             }
 
             return Json(await _context.Posts
-                .Join(_context.Bloggers, p => p.Blogger.BloggerId, b => b.BloggerId,
-                (p, b) => new { Post = p, Blogger = b })
-                .Join(_context.Blogs, p => p.Post.Blog.BlogId, b => b.BlogId,
-                (p, b) => new { PostId = p.Post.PostId, Title = p.Post.Title, Content = p.Post.Content, BloggerId = p.Blogger.BloggerId, Blogger = p.Blogger.NickName, BlogId = b.BlogId, Blog = b.Url })
-                .Where(p => p.BlogId == id).ToListAsync()
-                );
+                            .Join(_context.Bloggers, p => p.Blogger.BloggerId, b => b.BloggerId,
+                            (p, b) => new { Post = p, Blogger = b })
+                            .Join(_context.Blogs, p => p.Post.Blog.BlogId, b => b.BlogId,
+                            (p, b) => new { PostId = p.Post.PostId, Title = p.Post.Title, Content = p.Post.Content, BloggerId = p.Blogger.BloggerId, Blogger = p.Blogger.NickName, BlogId = b.BlogId, Blog = b.Url })
+                        .Where(p => p.BlogId == id).ToListAsync());
         }
 
 
@@ -104,7 +100,6 @@ namespace WordsApp.Sandbox.Blogging.Controllers
             _context.Posts.RemoveRange(_context.Posts);
             _context.Bloggers.RemoveRange(_context.Bloggers);
             _context.Blogs.RemoveRange(_context.Blogs);
-
 
             var blogFaker =
                 new Faker<Blog>()
@@ -154,11 +149,9 @@ namespace WordsApp.Sandbox.Blogging.Controllers
 
 
         // POST: Blogs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Route("edit/{id}")]
-        public async Task<IActionResult> Update(int id, [Bind("BlogId,Url")] Blog blog)
+        public async Task<IActionResult> Update(int id, [Bind("BlogId, Url")] Blog blog)
         {
             if (id != blog.BlogId)
             {
@@ -189,8 +182,6 @@ namespace WordsApp.Sandbox.Blogging.Controllers
         }
 
         // POST: Blogs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Route("create")]
         [HttpPost]
         public async Task<IActionResult> Create([Bind("BlogId,Url")] Blog blog)
@@ -209,11 +200,14 @@ namespace WordsApp.Sandbox.Blogging.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var blog = await _context.Blogs.FindAsync(id);
-            var blogPosts = await _context.Posts.Where(p => p.Blog.BlogId == id).ToListAsync();
-            _context.Posts.RemoveRange(blogPosts);
+            var blog = await _context.Blogs.SingleOrDefaultAsync(b => b.BlogId == id);
+
+                var blogPosts = await _context.Posts.Where(p => p.Blog.BlogId == id).ToListAsync();
+                _context.Posts.RemoveRange(blogPosts);
+
             _context.Blogs.Remove(blog);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 

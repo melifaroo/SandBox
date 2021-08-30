@@ -29,8 +29,6 @@ namespace WordsApp.Sandbox.Blogging.Controllers
         }
 
         // POST: Bloggers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [Route("create")]
         [HttpPost]
         public async Task<IActionResult> Create([Bind("BloggerId,NickName")] Blogger blogger)
@@ -53,9 +51,8 @@ namespace WordsApp.Sandbox.Blogging.Controllers
                 return NotFound();
             }
 
-            var blogger = await _context.Bloggers.FindAsync(id);
-            //var person = await _context.People
-            //    .FirstOrDefaultAsync(m => m.PersonId == id);
+            var blogger = await _context.Bloggers.SingleOrDefaultAsync(b => b.BloggerId == id);
+
             if (blogger == null)
             {
                 return NotFound();
@@ -83,23 +80,14 @@ namespace WordsApp.Sandbox.Blogging.Controllers
             {
                 return NotFound();
             }
-            //var query = from p in _context.Posts 
-            //            where p.Author.PersonId == id
-            //            group p by p.BlogId into g
-            //            select new
-            //            {
-            //                count = g.Count()
-            //            };
             var count = await _context.Posts.Where(p => p.Blogger.BloggerId == id).GroupBy(p => p.Blog.BlogId).CountAsync();
             return Json(count);
         }
 
         // POST: Bloggers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Route("edit/{id}")]
-        public async Task<IActionResult> Update(int id, [Bind("BloggerId,NickName")] Blogger blogger)
+        public async Task<IActionResult> Update(int id, [Bind("BloggerId, NickName")] Blogger blogger)
         {
             if (id != blogger.BloggerId)
             {
@@ -134,11 +122,14 @@ namespace WordsApp.Sandbox.Blogging.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var blogger = await _context.Bloggers.FindAsync(id);
-            var bloggerPosts = await _context.Posts.Where(p => p.Blogger.BloggerId == id).ToListAsync();
-            _context.Posts.RemoveRange(bloggerPosts);
+            var blogger = await _context.Bloggers.SingleOrDefaultAsync(b => b.BloggerId == id);
+
+                var bloggerPosts = await _context.Posts.Where(p => p.Blogger.BloggerId == id).ToListAsync();
+                _context.Posts.RemoveRange(bloggerPosts);
+
             _context.Bloggers.Remove(blogger);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -165,12 +156,11 @@ namespace WordsApp.Sandbox.Blogging.Controllers
             }
             
             return Json(await _context.Posts
-                .Join(_context.Bloggers, p => p.Blogger.BloggerId, b => b.BloggerId, 
-                (p, b) => new { Post = p,  Blogger = b })
-                .Join(_context.Blogs, p => p.Post.Blog.BlogId, b => b.BlogId,
-                (p, b) => new { PostId = p.Post.PostId, Title = p.Post.Title, Content = p.Post.Content, BloggerId = p.Blogger.BloggerId, Blogger = p.Blogger.NickName, BlogId = b.BlogId, Blog = b.Url })
-                .Where(p => p.BloggerId == id).ToListAsync()
-                );
+                        .Join(_context.Bloggers, p => p.Blogger.BloggerId, b => b.BloggerId, 
+                        (p, b) => new { Post = p,  Blogger = b })
+                        .Join(_context.Blogs, p => p.Post.Blog.BlogId, b => b.BlogId,
+                        (p, b) => new { PostId = p.Post.PostId, Title = p.Post.Title, Content = p.Post.Content, BloggerId = p.Blogger.BloggerId, Blogger = p.Blogger.NickName, BlogId = b.BlogId, Blog = b.Url })
+                    .Where(p => p.BloggerId == id).ToListAsync());
         }
 
 

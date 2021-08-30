@@ -26,13 +26,11 @@ namespace WordsApp.Sandbox.Blogging.Controllers
         public async Task<IActionResult> Index()
         {
             return Json(await _context.Posts
-                .Join(_context.Bloggers, p => p.Blogger.BloggerId, b => b.BloggerId,
-                (p, b) => new { Post = p, Blogger = b })
-                .Join(_context.Blogs, p => p.Post.Blog.BlogId, b => b.BlogId,
-                (p, b) => new { PostId = p.Post.PostId, Title = p.Post.Title, Content = p.Post.Content, BloggerId = p.Blogger.BloggerId, Blogger = p.Blogger.NickName, BlogId = b.BlogId, Blog = b.Url })
-                .ToListAsync()
-                );
-            //return Json(await _context.Posts.Include(p => p.Blogger).Include(p => p.Blog).ToListAsync()); //
+                                .Join(_context.Bloggers, p => p.Blogger.BloggerId, b => b.BloggerId,
+                                    (p, b) => new { Post = p, Blogger = b })
+                                .Join(_context.Blogs, p => p.Post.Blog.BlogId, b => b.BlogId,
+                                    (p, b) => new { PostId = p.Post.PostId, Title = p.Post.Title, Content = p.Post.Content, BloggerId = p.Blogger.BloggerId, Blogger = p.Blogger.NickName, BlogId = b.BlogId, Blog = b.Url })
+                            .ToListAsync());
         }
 
         [Route("{id}")]
@@ -62,9 +60,9 @@ namespace WordsApp.Sandbox.Blogging.Controllers
                 return NotFound();
             }
 
-            var blogger = await _context.Posts.FindAsync(id);
-            //var person = await _context.People
-            //    .FirstOrDefaultAsync(m => m.PersonId == id);
+            var post = await _context.Posts.SingleOrDefaultAsync(p => p.PostId == id);
+            var blogger = post.Blogger;
+
             if (blogger == null)
             {
                 return NotFound();
@@ -73,11 +71,9 @@ namespace WordsApp.Sandbox.Blogging.Controllers
         }
 
         // POST: Post/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [Route("edit/{id}")]
-        public async Task<IActionResult> Update(int id, [Bind("PostId,Title, Content, Blogger, Blog")] Post post)
+        public async Task<IActionResult> Update(int id, [Bind("PostId, Title, Content, Blogger, Blog")] Post post)
         {
             if (id != post.PostId)
             {
@@ -112,7 +108,7 @@ namespace WordsApp.Sandbox.Blogging.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var post = await _context.Posts.FindAsync(id);
+            var post = await _context.Posts.SingleOrDefaultAsync(p => p.PostId == id);
             _context.Posts.Remove(post);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
