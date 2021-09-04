@@ -11,12 +11,12 @@ import bloggingService from '../..'
 export default {
   data() {
     return {
-      bloggerId: this.$route.params.id,
+      bloggerId: this.$route.params.bloggerid,
       blogs: [],
     };
   },
-  async beforeCreate() {
-      await bloggingService.getBloggerBlogs(this.$route.params.id).then(result => this.blogs = result).catch((error) => console.log(error));
+  created() {
+      bloggingService.getBloggerBlogs(this.$route.params.bloggerid).then(result => this.blogs = result).catch((error) => console.log(error));
   },
   components :{
      blogscards

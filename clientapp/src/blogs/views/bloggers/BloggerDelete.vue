@@ -2,8 +2,8 @@
   <div class="deleteblogger">
     <bloggerdetails />
     <ul>
-      <a class="btn btn-secondary" href="/blogs/bloggers">Cancel</a>
-      <a class="btn btn-danger" @click="deleteBlogger(this.$route.params.id)">Confirm Delete</a>
+      <a class="btn btn-secondary" @click="this.$router.go(-1)">Cancel</a>
+      <a class="btn btn-danger" @click="deleteBlogger()">Confirm Delete</a>
     </ul>
   </div>
 </template>
@@ -17,8 +17,9 @@ export default {
     bloggerdetails: BloggerDetails,
   },
   methods: {
-    async deleteBlogger(id) {
-      await bloggingService.deleteBlogger(id).then( this.$router.push("/blogs/bloggers") ).catch( error => console.log(error) );
+    async deleteBlogger() {
+      await bloggingService.deleteBlogger(this.$route.params.bloggerid).catch( error => console.log(error) );
+      this.$router.go(-1);
     },
   },
 };

@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       blog: {
-        blogId: this.$route.params.id,
+        blogId: this.$route.params.blogid,
         url: "",
       },
       blogPostsCount: 0,
@@ -25,10 +25,10 @@ export default {
     };
   },
   created() {
-    if ("id" in this.$route.params) {
-      bloggingService.getBlogById(this.$route.params.id).then( result => this.blog = result ).catch( error => console.log(error) );
-      bloggingService.getBlogPostsCount(this.$route.params.id).then( result => this.blogPostsCount = result ).catch( error => console.log(error) );
-      bloggingService.getBlogAuthorsCount(this.$route.params.id).then( result => this.blogAuthorsCount = result ).catch( error => console.log(error) );
+    if ("blogid" in this.$route.params) {
+      bloggingService.getBlogById(this.$route.params.blogid).then( result => this.blog = result ).catch( error => console.log(error) );
+      bloggingService.getBlogPostsCount(this.$route.params.blogid).then( result => this.blogPostsCount = result ).catch( error => console.log(error) );
+      bloggingService.getBlogAuthorsCount(this.$route.params.blogid).then( result => this.blogAuthorsCount = result ).catch( error => console.log(error) );
     }
   },
 };

@@ -11,12 +11,12 @@ import bloggingService from '../..'
 export default {
   data() {
     return {
-      bloggerId: this.$route.params.id,
+      bloggerId: this.$route.params.bloggerid,
       posts: []
     };
   },
-  async beforeCreate() {
-    await bloggingService.getBloggerPosts(this.$route.params.id).then(result => {
+  created() {
+    bloggingService.getBloggerPosts(this.$route.params.bloggerid).then(result => {
                 for(var i in result)
                    this.posts.push(result[i]);
          }).catch((error) => console.log(error));

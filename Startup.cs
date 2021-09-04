@@ -41,10 +41,8 @@ namespace SandBox
                                         .AllowAnyMethod();
                                   });
             });
-            services.AddControllers().
-                AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-            services.AddDbContext<SandBoxContext>(
-                options => options.UseSqlServer(_SandBoxDBConnectionString));
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            services.AddDbContext<SandBoxContext>(options => options.UseSqlServer(_SandBoxDBConnectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

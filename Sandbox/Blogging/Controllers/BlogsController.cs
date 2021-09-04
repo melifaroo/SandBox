@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Bogus;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Sandbox;
 using Sandbox.Blogging.Model;
 
 namespace Sandbox.Blogging.Controllers
@@ -35,7 +33,7 @@ namespace Sandbox.Blogging.Controllers
         // GET: Blogs/5
         public async Task<IActionResult> Get(int? id)
         {
-            if (id == null)
+            if (id == null || id < 0)
             {
                 return NotFound();
             }
@@ -57,13 +55,14 @@ namespace Sandbox.Blogging.Controllers
             {
                 return NotFound();
             }
-
-            return Json(await _context.Posts
-                            .Join(_context.Bloggers, p => p.Blogger.BloggerId, b => b.BloggerId,
-                            (p, b) => new { Post = p, Blogger = b })
-                            .Join(_context.Blogs, p => p.Post.Blog.BlogId, b => b.BlogId,
-                            (p, b) => new { PostId = p.Post.PostId, Title = p.Post.Title, Content = p.Post.Content, BloggerId = p.Blogger.BloggerId, Blogger = p.Blogger.NickName, BlogId = b.BlogId, Blog = b.Url })
-                        .Where(p => p.BlogId == id).ToListAsync());
+            var blogPosts = await _context.Posts
+                    .Join(_context.Bloggers, p => p.Blogger.BloggerId, b => b.BloggerId,
+                        (p, b) => new { Post = p, Blogger = b })
+                    .Join(_context.Blogs, p => p.Post.Blog.BlogId, b => b.BlogId,
+                        (p, b) => new { PostId = p.Post.PostId, Title = p.Post.Title, Content = p.Post.Content, BloggerId = p.Blogger.BloggerId, Blogger = p.Blogger.NickName, BlogId = b.BlogId, Blog = b.Url })
+                    .Where(p => p.BlogId == id)
+                    .ToListAsync();
+            return Json(blogPosts);
         }
 
 
@@ -71,7 +70,7 @@ namespace Sandbox.Blogging.Controllers
         // GET: Blogs/5/postsCount
         public async Task<IActionResult> GetPostsCount(int? id)
         {
-            if (id == null)
+            if (id == null || id < 0)
             {
                 return NotFound();
             }
@@ -83,7 +82,7 @@ namespace Sandbox.Blogging.Controllers
         // GET: Blogs/5/authorsCount
         public async Task<IActionResult> GetAuthorsCount(int? id)
         {
-            if (id == null)
+            if (id == null || id < 0)
             {
                 return NotFound();
             }
@@ -94,57 +93,16 @@ namespace Sandbox.Blogging.Controllers
         // POST: Blogs/Seed
         [Route("seed")]
         [HttpPost]
-        public IActionResult Seed(int blogCount, int bloggerCount, int postCount)
+        public async Task<IActionResult> Seed(int blogCount, int bloggerCount, int postCount)
         {
-            _context.Database.EnsureCreated();
-            _context.Posts.RemoveRange(_context.Posts);
-            _context.Bloggers.RemoveRange(_context.Bloggers);
-            _context.Blogs.RemoveRange(_context.Blogs);
-
-            var blogFaker =
-                new Faker<Blog>()
-                .RuleFor(x => x.Url, f => f.Random.Word());
-            var bloggerFaker =
-                new Faker<Blogger>()
-                .RuleFor(x => x.NickName, f => f.Name.FullName());
-            var blogs = blogFaker.Generate(blogCount);
-            var bloggers = bloggerFaker.Generate(bloggerCount);
-            foreach (Blog blog in blogs)
+            try
             {
-                var testBlog = _context.Blogs.FirstOrDefault(b => b.Url == blog.Url);
-                if (testBlog == null)
-                {
-                    _context.Blogs.Add(blog);
-                }
+                var recordsCount = await _context.SeedBlogsData(blogCount, bloggerCount, postCount);
+                return Ok(recordsCount);
             }
-            foreach (Blogger blogger in bloggers)
-            {
-                var testBlogger = _context.Bloggers.FirstOrDefault(b => b.NickName == blogger.NickName);
-                if (testBlogger == null)
-                {
-                    _context.Bloggers.Add(blogger);
-                }
+            catch (Exception) { 
+                return BadRequest();            
             }
-
-            _context.SaveChanges();
-
-            int[] bloggerIds = new int[] { 0 };
-            var postFaker =
-                new Faker<Post>(locale : "en")
-                .RuleFor(x => x.Title, f => f.Random.Word())
-                .RuleFor(x => x.Content, f => f.Lorem.Sentences(5))
-                .RuleFor(x => x.Blogger, f => f.Random.ArrayElement(_context.Bloggers.ToArray()))
-                .RuleFor(x => x.Blog, f => f.Random.ArrayElement(_context.Blogs.ToArray()));
-            var posts = postFaker.Generate(postCount);
-
-            foreach (Post post in posts)
-            {
-                _context.Posts.Add(post);
-            }
-
-            _context.SaveChanges();
-
-            return Ok("Succesfully seeded data, randomly created " + blogCount + " blogs, " + bloggerCount + " bloggers and "+ postCount + " posts");
         }
 
 

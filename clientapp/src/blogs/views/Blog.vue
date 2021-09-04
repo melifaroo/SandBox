@@ -2,10 +2,9 @@
   <div class="blog">
     <blogdetails />
   </div> 
-  <a class="btn btn-success" :href="'/blogs/'+this.$route.params.id+'/createpost'">Create new post</a>    
+  <router-link class="btn btn-success" :to="'/blogs/'+this.$route.params.blogid+'/createpost'">Create new post</router-link>    
   <div class="blog-posts">      
-    <postscards :posts="posts" />
-    <!--a class="btn btn-success" href="/addpost">Write new post</a-->
+    <postscards :posts="posts"/>
   </div>
 </template>
 
@@ -17,12 +16,12 @@ import bloggingService from '..'
 export default {
   data() {
     return {
-      posts: [],
-    };
+        posts: []
+    }
   },
-  async beforeCreate() {
-      await bloggingService.getBlogPosts(this.$route.params.id).then(  result => this.posts = result  ).catch((error) => console.log(error));     
-  },
+  created(){
+    bloggingService.getBlogPosts(this.$route.params.blogid).then( result => this.posts = result ).catch((error) => console.log(error));  
+  },  
   components :{
       postscards,
       blogdetails

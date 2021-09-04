@@ -13,7 +13,6 @@
     <div v-else>
       <postslist :posts="posts" />
     </div>
-    <!--a class="btn btn-success" href="/addpost">Write new post</a-->
   </div>
 </template>
 
@@ -29,8 +28,8 @@ export default {
       layout : true,
     };
   },
-  async beforeCreate() {
-      await bloggingService.getPosts().then( result => this.posts = result ).catch((error) => console.log(error));   
+  created() {
+      bloggingService.getPosts().then( result => this.posts = result ).catch((error) => console.log(error));  
   },
   components :{
       postslist,

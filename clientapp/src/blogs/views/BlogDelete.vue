@@ -2,8 +2,8 @@
   <div class="deleteblog">
     <blogdetails />
     <ul>
-      <a class="btn btn-secondary" href="/blogs">Cancel</a>
-      <a class="btn btn-danger" @click="deleteBlog(this.$route.params.id)">Confirm Delete</a>
+      <a class="btn btn-secondary" @click="this.$router.go(-1)">Cancel</a>
+      <a class="btn btn-danger" @click="deleteBlog(this.$route.params.blogid)">Confirm Delete</a>
     </ul>
   </div>
 </template>
@@ -18,7 +18,8 @@ export default {
   },
   methods: {
     async deleteBlog(id) {
-      await bloggingService.deleteBlog(id).then( this.$router.push("/blogs") ).catch( error => console.log(error) );
+      await bloggingService.deleteBlog(id).catch( error => console.log(error) );
+      this.$router.go(-1);
     },
   },
 };

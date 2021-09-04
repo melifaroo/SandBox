@@ -3,11 +3,14 @@
     <h1>Blog details</h1>
     <div class="container">
       <form @submit.prevent="createOrUpdateBlog">
-        <div class="form-group" style="margin-bottom: 10px">
-          <input type="text" class="form-control"  id="url"  v-model="Blog.url" placeholder="Enter blog title" />
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Blog Title</span>
+          </div>
+          <input type="text" class="form-control" id="url" v-model="Blog.url" placeholder="Enter blog title" />
         </div>
         <ul>
-          <a class="btn btn-secondary" href="/blogs">All blogs</a>
+          <a class="btn btn-secondary" @click="this.$router.go(-1)">All blogs</a>
           <button type="submit" class="btn btn-info">Save</button>
         </ul>
       </form>
@@ -16,7 +19,7 @@
 </template>
 
 <script>
-import bloggingService from '..'
+import bloggingService from "..";
 
 export default {
   name: "BlogForm",
@@ -28,15 +31,16 @@ export default {
       },
     };
   },
-  created (){
-    if ("id" in this.$route.params) {
-      bloggingService.getBlogById(this.$route.params.id).then( result => this.Blog = result ).catch( error => console.log(error) );
-    }    
-  },
-  methods: {   
-    async createOrUpdateBlog() {
-      await bloggingService.createOrUpdateBlog(this.Blog).then( this.$router.push("/blogs") ).catch( error => console.log(error) );
+  created() {
+    if ("blogid" in this.$route.params) {
+      bloggingService.getBlogById(this.$route.params.blogid).then((result) => (this.Blog = result)).catch((error) => console.log(error));
     }
+  },
+  methods: {
+    async createOrUpdateBlog() {
+      await bloggingService.createOrUpdateBlog(this.Blog).catch((error) => console.log(error));
+      this.$router.go(-1);
+    },
   },
 };
 </script>

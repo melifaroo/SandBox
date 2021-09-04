@@ -13,12 +13,12 @@
       <tbody v-if="posts && posts.length" >
         <tr v-for="post of posts" v-bind:key="post">
           <th scope="row" style="display:none;">{{ post.postId }}</th>
-          <td><a class="btn btn-link" v-bind:href="'/blogs/posts/'+ post.postId">{{ post.title }}</a></td>
-          <td><a class="btn btn-link" v-bind:href="'/blogs/bloggers/'+ post.blogger.bloggerId">{{ post.blogger.nickName }}</a></td>
-          <td><a class="btn btn-link" v-bind:href="'/blogs/'+ post.blog.blogId">{{ post.blog.url }}</a></td>
+          <td><router-link class="btn btn-link" :to="'/blogs/posts/'+ post.postId">{{ post.title }}</router-link></td>
+          <td><router-link class="btn btn-link" :to="'/blogs/bloggers/'+ post.blogger.bloggerId">{{ post.blogger.nickName }}</router-link></td>
+          <td><router-link class="btn btn-link" :to="'/blogs/'+ post.blog.blogId">{{ post.blog.url }}</router-link></td>
           <td>
-            <a class="btn btn-warning" v-bind:href="'/blogs/posts/edit/'+ post.postId">Edit</a>
-            <a class="btn btn-danger" v-bind:href="'/blogs/posts/delete/'+ post.postId">Delete</a>      
+            <router-link class="btn btn-warning" :to="'/blogs/posts/edit/'+ post.postId">Edit</router-link>
+            <router-link class="btn btn-danger" :to="'/blogs/posts/delete/'+ post.postId">Delete</router-link>      
           </td>
         </tr>
       </tbody>

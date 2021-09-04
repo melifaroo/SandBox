@@ -4,17 +4,17 @@
       <div class="card bg-light mb-3" style="width=16rem;">
         <div class="card-header">
           <h5 class="card-title">
-            <a v-bind:href="'/blogs/' + blog.blogId">{{blog.url}}</a>
+            <router-link :to="'/blogs/' + blog.blogId">{{blog.url}}</router-link>
           </h5>
         </div>
-        <a v-bind:href="'/blogs/' + blog.blogId"><img
+        <router-link :to="'/blogs/' + blog.blogId"><img
             class="card-img-top"
             :src="'https://loremflickr.com/150/100/' + (word = parseName(blog.url)) + '?lock=' + blog.blogId"
-            :alt="'https://loremflickr.com/150/100/' + word + '?lock=' + blog.blogId"/></a>
+            :alt="'https://loremflickr.com/150/100/' + word + '?lock=' + blog.blogId"/></router-link>
         <div class="card-body">
           <p>
-            <a class="btn btn-warning" v-bind:href="'/blogs/edit/' + blog.blogId">Rename</a>
-            <a class="btn btn-danger" v-bind:href="'/blogs/delete/' + blog.blogId">Delete</a>
+            <router-link class="btn btn-warning" :to="'/blogs/edit/' + blog.blogId">Rename</router-link>
+            <router-link class="btn btn-danger" :to="'/blogs/delete/' + blog.blogId">Delete</router-link>
           </p>
         </div>
       </div>

@@ -3,11 +3,14 @@
     <h1>input or edit blogger details </h1>
     <div class="container">
       <form @submit.prevent="createOrUpdateBlogger">
-        <div class="form-group" style="margin-bottom: 10px">
+        <div class="input-group">
+          <div class="input-group-prepend">
+              <span class="input-group-text" >NickName</span>
+          </div>   
           <input type="text" class="form-control"  id="NickName"  v-model="Blogger.nickName" placeholder="Enter NickName" />
         </div>
         <ul>
-          <a class="btn btn-secondary" href="/blogs/bloggers">All bloggers</a>
+          <a class="btn btn-secondary" @click="this.$router.go(-1)">Cancel</a>
           <button type="submit" class="btn btn-info">Save</button>
         </ul>
       </form>
@@ -29,13 +32,14 @@ export default {
     };
   },
   created (){
-    if ("id" in this.$route.params) {
-      bloggingService.getBloggerById(this.$route.params.id).then( result => this.Blogger = result ).catch( error => console.log(error) );
+    if ("bloggerid" in this.$route.params) {
+      bloggingService.getBloggerById(this.$route.params.bloggerid).then( result => this.Blogger = result ).catch( error => console.log(error) );
     }    
   },
   methods: {   
     async createOrUpdateBlogger() {
-      await bloggingService.createOrUpdateBlogger(this.Blogger).then( this.$router.push("/blogs/bloggers") ).catch( error => console.log(error) );
+      await bloggingService.createOrUpdateBlogger(this.Blogger).catch( error => console.log(error) );
+      this.$router.go(-1);
     }
   },
 };

@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Sandbox.Library.Model;
 using Sandbox.Blogging.Model;
+using Bogus;
+using System.Threading.Tasks;
 
 namespace Sandbox
 {
@@ -17,9 +17,12 @@ namespace Sandbox
         public DbSet<Borrowing> Borrowings { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Reader> Readers { get; set; }
+
         public SandBoxContext(DbContextOptions<SandBoxContext> options) : base(options)
         {
+
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Blog>()
@@ -61,6 +64,7 @@ namespace Sandbox
             modelBuilder.Entity<Post>().HasData(new { PostId = 2, Title = "DB create", Content = "EFCore with sql", PostedOn = DateTime.Parse("2021-08-11"), BloggerId = 1, BlogId = 2 });
             modelBuilder.Entity<Post>().HasData(new { PostId = 3, Title = "Congrats!", Content = "Testng of REST api passed successfullyt", PostedOn = DateTime.Parse("2021-08-12"), BloggerId = 2, BlogId = 1 });
         }
+
         private void initializeLibrary(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Reader>().HasData(new { ReaderId = 1, FullName = "Marja Tinline" });
@@ -99,6 +103,41 @@ namespace Sandbox
             modelBuilder.Entity<Borrowing>().HasData(new { BorrowingId = 5, ReaderId = 1, BookId = 2, Date = DateTime.Parse("2021-08-20"), Term = 14 });
             modelBuilder.Entity<Borrowing>().HasData(new { BorrowingId = 6, ReaderId = 2, BookId = 4, Date = DateTime.Parse("2021-08-20"), Term = 14 });
 
+        }
+
+        public async Task<int> SeedBlogsData(int blogCount, int bloggerCount, int postCount)
+        {
+            this.Database.EnsureCreated();
+
+            this.Posts.RemoveRange(this.Posts);
+            this.Bloggers.RemoveRange(this.Bloggers);
+            this.Blogs.RemoveRange(this.Blogs);
+
+            await this.SaveChangesAsync();
+
+            var blogFaker = new Faker<Blog>().RuleFor(x => x.Url, f => f.Random.Word());
+            var bloggerFaker = new Faker<Blogger>().RuleFor(x => x.NickName, f => f.Name.FullName());
+            var blogs = blogFaker.Generate(blogCount);
+            var bloggers = bloggerFaker.Generate(bloggerCount);
+
+            this.Blogs.AddRange(blogs);
+            this.Bloggers.AddRange(bloggers);
+
+            var recordsCount = await this.SaveChangesAsync();
+
+            int[] bloggerIds = new int[] { 0 };
+            var postFaker = new Faker<Post>(locale: "en")
+                .RuleFor(x => x.Title, f => f.Random.Word())
+                .RuleFor(x => x.Content, f => f.Lorem.Sentences(5))
+                .RuleFor(x => x.Blogger, f => f.Random.ArrayElement(this.Bloggers.ToArray()))
+                .RuleFor(x => x.Blog, f => f.Random.ArrayElement(this.Blogs.ToArray()));
+            var posts = postFaker.Generate(postCount);
+
+            this.Posts.AddRange(posts);
+
+            recordsCount += await this.SaveChangesAsync();
+
+            return recordsCount;
         }
     }
 }

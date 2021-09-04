@@ -2,8 +2,8 @@
   <div class="blogger">
     <bloggerdetails />
     <ul>
-      <a class="btn btn-secondary" href="/blogs/bloggers">All bloggers</a>
-      <a class="btn btn-primary" @click="createPost(this.$route.params.id)">Create post</a>
+      <router-link class="btn btn-secondary" :to="'/blogs/bloggers'">All bloggers</router-link>
+      <router-link  class="btn btn-primary" :to="'/blogs/bloggers/'+this.$route.params.bloggerid+'/createpost'">Create post</router-link >
     </ul>
   </div>
   
@@ -20,10 +20,6 @@ export default {
   },
   components: {
     bloggerdetails: BloggerDetails,
-  },
-  created() {
-  },
-  methods: {
   },
 };
 </script>

@@ -2,8 +2,8 @@
   <div class="blogger-details">
     <h4>Blogger {{ Blogger.nickName }}  
         <samp v-if="bloggerPostsCount>0">
-            has <a :href="'/blogs/bloggers/'+this.$route.params.id+'/posts/'">{{ bloggerPostsCount }} Post<samp v-show="bloggerPostsCount > 1">s</samp></a> 
-            in <a :href="'/blogs/bloggers/'+this.$route.params.id+'/blogs/'">{{ bloggerBlogsCount }} Blog<samp v-show="bloggerBlogsCount > 1">s</samp></a>
+            has <router-link :to="'/blogs/bloggers/'+this.$route.params.bloggerid+'/posts/'">{{ bloggerPostsCount }} Post<samp v-show="bloggerPostsCount > 1">s</samp></router-link> 
+            in <router-link :to="'/blogs/bloggers/'+this.$route.params.bloggerid+'/blogs/'">{{ bloggerBlogsCount }} Blog<samp v-show="bloggerBlogsCount > 1">s</samp></router-link>
         </samp>
         <samp v-else>has no posts</samp>
     </h4>    
@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       Blogger: {
-        bloggerId: this.$route.params.id,
+        bloggerId: this.$route.params.bloggerid,
         nickName: "",
       },
       bloggerPostsCount: 0,
@@ -26,10 +26,10 @@ export default {
     };
   },
   created() {
-    if ("id" in this.$route.params) {
-      bloggingService.getBloggerById(this.$route.params.id).then( result => this.Blogger = result ).catch( error => console.log(error) );
-      bloggingService.getBloggerPostsCount(this.$route.params.id).then( result => this.bloggerPostsCount = result ).catch( error => console.log(error) );
-      bloggingService.getBloggerBlogsCount(this.$route.params.id).then( result => this.bloggerBlogsCount = result ).catch( error => console.log(error) );
+    if ("bloggerid" in this.$route.params) {
+      bloggingService.getBloggerById(this.$route.params.bloggerid).then( result => this.Blogger = result ).catch( error => console.log(error) );
+      bloggingService.getBloggerPostsCount(this.$route.params.bloggerid).then( result => this.bloggerPostsCount = result ).catch( error => console.log(error) );
+      bloggingService.getBloggerBlogsCount(this.$route.params.bloggerid).then( result => this.bloggerBlogsCount = result ).catch( error => console.log(error) );
     }
   },
 };

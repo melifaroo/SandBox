@@ -39,7 +39,7 @@
             </div>
             
         <ul>
-          <a class="btn btn-secondary" :href="'/blogs/'+this.$route.params.id">Back to {{ Blog.url }} </a>
+          <router-link class="btn btn-secondary" :to="'/blogs/'+this.$route.params.blogid">Back to {{ Blog.url }} </router-link>
           <button type="submit" class="btn btn-success">Save</button>
         </ul>
       </form>
@@ -59,26 +59,27 @@ export default {
         title: "",
         content: "",
         bloggerId: "",
-        blogId: this.$route.params.id,
+        blogId: this.$route.params.blogid,
       },
       Blog: {
         url : "",
-        blogId: this.$route.params.id,          
+        blogId: this.$route.params.blogid,          
       },
       bloggers: [],
       blogs: []
     };
   },
   created (){
-    if ("id" in this.$route.params) {
-        bloggingService.getBlogById(this.$route.params.id).then( result => this.Blog = result ).catch( error => console.log(error) );
+    if ("blogid" in this.$route.params) {
+        bloggingService.getBlogById(this.$route.params.blogid).then( result => this.Blog = result ).catch( error => console.log(error) );
     }    
     bloggingService.getBlogs().then(result => this.blogs = result).catch((error) => console.log(error)); 
     bloggingService.getBloggers().then( result => this.bloggers = result ).catch( error => console.log(error) );     
   },
   methods: {   
     async createPost() {
-      await bloggingService.createPost(this.Post).then( this.$router.push("/blogs/"+this.$route.params.id) ).catch( error => console.log(error) );
+      await bloggingService.createPost(this.Post).catch( error => console.log(error) );
+      this.$router.go(-1);
     }
   },
 };

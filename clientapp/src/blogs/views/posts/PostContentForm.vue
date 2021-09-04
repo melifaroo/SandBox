@@ -10,7 +10,7 @@
           <input type="text" class="form-control"  id="content"  v-model="Post.content" placeholder="Post content" />
         </div>
         <ul>
-          <a class="btn btn-secondary" href="/blogs/posts">Return</a>
+          <a class="btn btn-secondary" @click="this.$router.go(-1)">Return</a>
           <button type="submit" class="btn btn-info">Save</button>
         </ul>
       </form>
@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       Post: {
-        postId: undefined,
+        postId: this.$route.params.postid,
         title: "",
         content: "",
         blogger: {},
@@ -35,11 +35,12 @@ export default {
     };
   },
   created (){
-      bloggingService.getPostById(this.$route.params.id).then( result => this.Post = result ).catch( error => console.log(error) );
+      bloggingService.getPostById(this.$route.params.postid).then( result => this.Post = result ).catch( error => console.log(error) );
   },
   methods: {   
     async updatePost() {
-      await bloggingService.updatePost(this.Post).then( this.$router.push("/blogs/posts") ).catch( error => console.log(error) );
+      await bloggingService.updatePost(this.Post).catch( error => console.log(error) );      
+      this.$router.go(-1);
     }
   },
 };

@@ -11,10 +11,10 @@
       <tbody v-if="blogs && blogs.length">
         <tr v-for="blog of blogs" v-bind:key="blog">
           <th scope="row" style="display:none;">{{ blog.blogId }}</th>
-          <td><a class="btn btn-link" v-bind:href="'/blogs/'+ blog.blogId">{{ blog.url }}</a></td>
+          <td><router-link class="btn btn-link" :to="'/blogs/'+ blog.blogId">{{ blog.url }}</router-link></td>
           <td>
-            <a class="btn btn-warning" v-bind:href="'/blogs/edit/'+ blog.blogId">Rename</a>
-            <a class="btn btn-danger" v-bind:href="'/blogs/delete/'+ blog.blogId">Delete</a>      
+            <router-link class="btn btn-warning" :to="'/blogs/edit/'+ blog.blogId">Rename</router-link>
+            <router-link class="btn btn-danger" :to="'/blogs/delete/'+ blog.blogId">Delete</router-link>      
           </td>
         </tr>
       </tbody>

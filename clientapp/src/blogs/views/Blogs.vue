@@ -1,7 +1,7 @@
 <template>
   <div class="Blogs">
     <h1>Blogs ({{blogs.length}})</h1>
-    <a class="btn btn-success" href="/blogs/create">Create new blog</a>     
+    <router-link class="btn btn-success" :to="'/blogs/create'">Create new blog</router-link>     
     <form>
     <div class="form-switch">
       <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" v-model="layout" >
@@ -31,8 +31,8 @@ export default {
       layout : true,
     };
   },
-  async beforeCreate() {
-      await bloggingService.getBlogs().then(result => this.blogs = result).catch((error) => console.log(error)); 
+  created() {
+      bloggingService.getBlogs().then(result => this.blogs = result).catch((error) => console.log(error)); 
   },
   components :{
      blogslist,

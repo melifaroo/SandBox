@@ -42,8 +42,7 @@ var bloggingService = {
     },
 
     async deleteBlogger(id) {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/bloggers/delete/" + id, { method: "POST" });
-        return this.process(response);
+        await fetch(this.baseUrl + "/sandbox/blogging/bloggers/delete/" + id, { method: "POST" });
     },
 
     async createOrUpdateBlogger(Blogger) {
@@ -63,8 +62,8 @@ var bloggingService = {
       },
       
     async deleteBlog(id) {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/blogs/delete/" + id, { method: "POST" });
-        return this.process(response);
+        await fetch(this.baseUrl + "/sandbox/blogging/blogs/delete/" + id, { method: "POST" });
+        //return this.process(response);
     },
 
     async createOrUpdateBlog(Blog) {
@@ -84,8 +83,7 @@ var bloggingService = {
       },
       
     async deletePost(id) {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/posts/delete/" + id, { method: "POST" });
-        return this.process(response);
+        return await fetch(this.baseUrl + "/sandbox/blogging/posts/delete/" + id, { method: "POST" });
     },
     
     async updatePost(Post) {
@@ -141,13 +139,11 @@ var bloggingService = {
         return response;
     },
 
-    process(response){
-        const data = response.json();
+    async process(response){
         if (!response.ok) {
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
+            return Promise.reject(response.statusText);
         }
-        return data;
+        return await response.json();
     }
 
 }

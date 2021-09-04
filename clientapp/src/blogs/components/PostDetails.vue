@@ -1,9 +1,9 @@
 <template>
   <div class="post-details">
-    <h1> <a v-bind:href="'/blogs/posts/' + post.postId">{{ post.title }}</a> </h1>
+    <h1> <router-link :to="'/blogs/posts/' + post.postId">{{ post.title }}</router-link> </h1>            
             <p><sub>
-              by <a v-bind:href="'/blogs/bloggers/' + post.blogger.bloggerId">{{post.blogger.nickName}}</a>
-              in <a v-bind:href="'/blogs/' + post.blog.blogId">{{post.blog.url}}</a>
+              by <router-link :to="'/blogs/bloggers/' + post.blogger.bloggerId">{{post.blogger.nickName}}</router-link>
+              in <router-link :to="'/blogs/' + post.blog.blogId">{{post.blog.url}}</router-link>
             </sub></p>
   </div>
 </template>
@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       post: {
-        postId: this.$route.params.id,
+        postId: this.$route.params.postid,
         title: "",
         content: "",
         blog: {},
@@ -25,8 +25,8 @@ export default {
     };
   },
   created() {
-    if ("id" in this.$route.params) {
-      bloggingService.getPostById(this.$route.params.id).then( result => this.post = result ).catch( error => console.log(error) );
+    if ("postid" in this.$route.params) {
+      bloggingService.getPostById(this.$route.params.postid).then( result => this.post = result ).catch( error => console.log(error) );
     }
   },
 };

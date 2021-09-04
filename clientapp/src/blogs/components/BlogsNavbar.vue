@@ -3,7 +3,7 @@
     <div class="container-fluid" style="margin-left:130px">
         <span ></span>
       <div class="navbar-header">
-        <a class="navbar-brand" href="/Blogs">BlogsApp</a>
+        <router-link class="navbar-brand" :to="'/Blogs'">BlogsApp</router-link>
       </div>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation" >
@@ -12,9 +12,9 @@
 
       <div class="collapse navbar-collapse" id="navbar">
         <ul class="nav navbar-nav mr-auto">
-          <li class="nav-item"><a class="nav-link" href="/Blogs">Blogs<span class="sr-only">(current)</span></a></li>
-          <li class="nav-item"><a class="nav-link" href="/Blogs/Bloggers">Bloggers</a></li>       
-          <li class="nav-item"><a class="nav-link" href="/Blogs/Posts">Posts</a></li>
+          <li class="nav-item"><router-link class="nav-link" :to="'/Blogs'">Blogs<span class="sr-only">(current)</span></router-link></li>
+          <li class="nav-item"><router-link class="nav-link" :to="'/Blogs/Bloggers'">Bloggers</router-link></li>       
+          <li class="nav-item"><router-link class="nav-link" :to="'/Blogs/Posts'">Posts</router-link></li>
         </ul>
       </div>
     </div>

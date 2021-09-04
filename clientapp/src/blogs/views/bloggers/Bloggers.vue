@@ -1,7 +1,7 @@
 <template>
   <div class="bloggers">
     <h1>Bloggers ({{bloggers.length}})</h1>   
-    <a class="btn btn-success" href="/sandbox/blogging/addblogger">Add blogger</a>        
+    <router-link class="btn btn-success" to="/blogs/bloggers/create">Add new blogger</router-link>        
     <bloggerslist :bloggers="bloggers" />
   </div>
 </template>
@@ -16,8 +16,8 @@ export default {
       bloggers: [],
     };
   },
-  async beforeCreate() {
-    await bloggingService.getBloggers().then( result => this.bloggers = result ).catch( error => console.log(error) );     
+  created() {
+    bloggingService.getBloggers().then( result => this.bloggers = result ).catch( error => console.log(error) );     
   },
   components :{
       bloggerslist  

@@ -1,11 +1,9 @@
 <template>
-  <div class="postview">
-         
+  <div class="postview">         
     <postdetails />
     <div class="card-body">
         <p style="text-align: left;">{{post.content}}</p>  
-    </div>`
-
+    </div>
   </div>
 </template>
 
@@ -20,7 +18,7 @@ export default {
     data() {
     return {
       post: {
-        postId: this.$route.params.id,
+        postId: this.$route.params.postid,
         title: "",
         content: "",
         blog: {},
@@ -29,8 +27,8 @@ export default {
     };
   },
   created() {
-    if ("id" in this.$route.params) {
-      bloggingService.getPostById(this.$route.params.id).then( result => this.post = result ).catch( error => console.log(error) );
+    if ("postid" in this.$route.params) {
+      bloggingService.getPostById(this.$route.params.postid).then( result => this.post = result ).catch( error => console.log(error) );
     }
   },
 };
