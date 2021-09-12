@@ -7,6 +7,8 @@
 bin/
 obj/
 
+queries/
+
 # Common node modules locations
 /node_modules
 /wwwroot/node_modules
@@ -45,7 +47,6 @@ node_modules/
 dist/
 npm-debug.log
 yarn-error.log
-*.sln
 
 ### VisualStudio ###
 ## Ignore Visual Studio temporary files, build results, and
