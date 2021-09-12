@@ -11,7 +11,7 @@ using Sandbox.Blogging.Model;
 namespace Sandbox.Blogging.Controllers
 {
     [ApiController]
-    [Route("api/sandbox/blogging/[controller]")]
+    [Route("api/[controller]")]
     [EnableCors("_myAllowSpecificOrigins")]
     public class BlogsController : Controller
     {

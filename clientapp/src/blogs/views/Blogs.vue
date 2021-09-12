@@ -8,7 +8,6 @@
       <label class="form-check-label" for="flexSwitchCheckDefault">Cards/List</label>
     </div>
     </form>
-    <!--a class="btn btn-link" :click="viewlayout = 'cards'" href=#>Cards</a> | <a class="btn btn-link" :click="viewlayout = 'list'" href=#>List</a--> 
     <div v-if="layout">
       <blogscards :blogs="blogs" />
     </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="card-deck flex-wrap" style="max-width: 600px; margin: auto;" v-if="posts && posts.length">
     <div v-for="post of currentPageItems" v-bind:key="post">
-      <div class="card bg-light mb-6" style="width=16rem;">
+      <div class="card bg-light mb-6" style="max-width: 300px;">
         <div class="card-header">
           <h3 class="card-title">
             <router-link :to="'/blogs/posts/' + post.postId">{{post.title}}</router-link>

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Sandbox;
+using SandBox.Sandbox.Library.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,8 +19,8 @@ namespace SandBox
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-        readonly string _SandBoxDBConnectionString = @"Server=(localdb)\mssqllocaldb;Database=SandBox";
+        public readonly static string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        public readonly static string _SandBoxDBConnectionString = @"Server=(localdb)\mssqllocaldb;Database=SandBox";
 
         public Startup(IConfiguration configuration)
         {
@@ -41,8 +42,11 @@ namespace SandBox
                                         .AllowAnyMethod();
                                   });
             });
-            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            services.AddControllers()
+                .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
             services.AddDbContext<SandBoxContext>(options => options.UseSqlServer(_SandBoxDBConnectionString));
+            services.AddScoped<ILibraryDataService, LibraryDataService>();
+            services.AddScoped<ILibraryService, LibraryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -15,6 +15,53 @@ const routes = [
         name: "About",
         component: About,
     },
+    
+    {
+        path: "/library",
+        name: "Library",
+        component: () => import('@/library/LibraryApp.vue'),
+        children: [
+            {
+                path: "booksreaderview",
+                name: "BooksReaderView",
+                component: () => import('@/library/views/BooksReaderView.vue')
+            },
+            {
+                path: "register",
+                name: "Register",
+                component: () => import('@/library/views/Register.vue'),                
+                children: [
+                    {
+                        path: "",
+                        name: "Borrowings",
+                        component: () => import('@/library/views/Borrowings.vue')
+                    },
+                    {
+                        path: "readers",
+                        name: "Readers",
+                        component: () => import('@/library/views/Readers.vue')
+                    }
+                ]
+            },
+            {
+                path: "storage",
+                name: "Storage",
+                component: () => import('@/library/views/Storage.vue'),                
+                children: [
+                    {
+                        path: "",
+                        name: "Books",
+                        component: () => import('@/library/views/Books.vue')
+                    },
+                    {
+                        path: "authors",
+                        name: "Authors",
+                        component: () => import('@/library/views/Authors.vue')
+                    }
+                ]
+            },
+        ]
+    },
 
     {
         path: "/blogs",
@@ -122,21 +169,20 @@ const routes = [
         ]   
     },
     {
-        path: "/dbseed",
+        path: "/Blogs/dbseed",
         name: "DBSeed",
-        component: () => import('@/views/DbSeed.vue')
+        component: () => import('@/blogs/views/DbSeed.vue')
     }
 ];
 
 const router = createRouter({
     history: createWebHistory(),
-    previous: "",
+    previous: "/",
     routes,
 });
 
 router.beforeEach((to, from, next) => {
     router.previous = from.fullPath;
-    console.log("beforeEach:" + from.fullPath);
     next();
   })
 

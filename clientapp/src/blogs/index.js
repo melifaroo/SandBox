@@ -1,52 +1,52 @@
 var bloggingService = {
-    baseUrl : "https://localhost:5001/api",
+    baseUrl : "https://localhost:5001",
 
     async getBloggerById(id) {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/bloggers/" + id);
+        let response = await fetch(this.baseUrl + "/api/blogs/bloggers/" + id);
         return this.process(response);
     },
 
     async getBlogById(id) {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/blogs/" + id);
+        let response = await fetch(this.baseUrl + "/api/blogs/" + id);
         return this.process(response);
     },
 
     async getPostById(id) {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/posts/" + id);
+        let response = await fetch(this.baseUrl + "/api/blogs/posts/" + id);
         return this.process(response);
     },
 
     async getBloggerPostsCount(id) {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/bloggers/" + id + "/postsCount");
+        let response = await fetch(this.baseUrl + "/api/blogs/bloggers/" + id + "/postsCount");
         return this.process(response);
     },
 
     async getBloggerBlogsCount(id) {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/bloggers/" + id + "/blogsCount");
+        let response = await fetch(this.baseUrl + "/api/blogs/bloggers/" + id + "/blogsCount");
         return this.process(response);
     },
 
     async getBlogPostsCount(id) {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/blogs/" + id + "/postsCount");
+        let response = await fetch(this.baseUrl + "/api/blogs/" + id + "/postsCount");
         return this.process(response);
     },
 
     async getBlogAuthorsCount(id) {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/blogs/" + id + "/authorsCount");
+        let response = await fetch(this.baseUrl + "/api/blogs/" + id + "/authorsCount");
         return this.process(response);
     },
 
     async getBloggers() {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/bloggers");
+        let response = await fetch(this.baseUrl + "/api/blogs/bloggers");
         return this.process(response);
     },
 
     async deleteBlogger(id) {
-        await fetch(this.baseUrl + "/sandbox/blogging/bloggers/delete/" + id, { method: "POST" });
+        await fetch(this.baseUrl + "/api/blogs/bloggers/delete/" + id, { method: "POST" });
     },
 
     async createOrUpdateBlogger(Blogger) {
-        var url = this.baseUrl + "/sandbox/blogging/bloggers/";
+        var url = this.baseUrl + "/api/blogs/bloggers/";
         if (Blogger.bloggerId!=undefined) {
           url = url + "edit/" + Blogger.bloggerId;
         } else {
@@ -62,12 +62,12 @@ var bloggingService = {
       },
       
     async deleteBlog(id) {
-        await fetch(this.baseUrl + "/sandbox/blogging/blogs/delete/" + id, { method: "POST" });
+        await fetch(this.baseUrl + "/api/blogs/delete/" + id, { method: "POST" });
         //return this.process(response);
     },
 
     async createOrUpdateBlog(Blog) {
-        var url = this.baseUrl + "/sandbox/blogging/blogs/";
+        var url = this.baseUrl + "/api/blogs/";
         if (Blog.blogId!=undefined) {
           url = url + "edit/" + Blog.blogId;
         } else {
@@ -83,11 +83,11 @@ var bloggingService = {
       },
       
     async deletePost(id) {
-        return await fetch(this.baseUrl + "/sandbox/blogging/posts/delete/" + id, { method: "POST" });
+        return await fetch(this.baseUrl + "/api/blogs/posts/delete/" + id, { method: "POST" });
     },
     
     async updatePost(Post) {
-        var url = this.baseUrl + "/sandbox/blogging/posts/edit/" + Post.postId;
+        var url = this.baseUrl + "/api/blogs/posts/edit/" + Post.postId;
         const requestOptions = {
           method: "POST",
           body: JSON.stringify( Post ),
@@ -98,7 +98,7 @@ var bloggingService = {
       },
       
     async createPost(Post) {
-        var url = this.baseUrl + "/sandbox/blogging/posts/create";
+        var url = this.baseUrl + "/api/blogs/posts/create";
         const requestOptions = {
           method: "POST",
           body: JSON.stringify( Post ),
@@ -109,33 +109,33 @@ var bloggingService = {
       },
 
       async getBlogPosts(id) {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/blogs/"+id+"/posts");
+        let response = await fetch(this.baseUrl + "/api/blogs/"+id+"/posts");
         return this.process(response);
       },
 
       async getBloggerBlogs(id) {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/bloggers/"+id+"/blogs");
+        let response = await fetch(this.baseUrl + "/api/blogs/bloggers/"+id+"/blogs");
         return this.process(response);
       },
 
       async getBloggerPosts(id) {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/bloggers/"+id+"/posts");
+        let response = await fetch(this.baseUrl + "/api/blogs/bloggers/"+id+"/posts");
         return this.process(response);
       },
 
 
     async getBlogs() {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/blogs");
+        let response = await fetch(this.baseUrl + "/api/blogs");
         return this.process(response);
     },
 
     async getPosts() {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/posts");
+        let response = await fetch(this.baseUrl + "/api/blogs/posts");
         return this.process(response);
     },
 
     async seedSandBoxDB(blogCount, bloggerCount, postCount) {
-        let response = await fetch(this.baseUrl + "/sandbox/blogging/blogs/seed?blogCount=" + blogCount +"&bloggerCount=" +bloggerCount+ "&postCount=" + postCount, { method: "POST" });
+        let response = await fetch(this.baseUrl + "/api/blogs/seed?blogCount=" + blogCount +"&bloggerCount=" +bloggerCount+ "&postCount=" + postCount, { method: "POST" });
         return response;
     },
 

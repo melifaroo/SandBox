@@ -10,11 +10,12 @@ namespace Sandbox
 {
     public class SandBoxContext : DbContext
     {
-        public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Blogger> Bloggers { get; set; }
-        public DbSet<Book> Books { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+
         public DbSet<Borrowing> Borrowings { get; set; }
+        public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Reader> Readers { get; set; }
 
@@ -34,6 +35,7 @@ namespace Sandbox
             modelBuilder.Entity<Blogger>()
                 .Property(p => p.BloggerId)
                 .ValueGeneratedOnAdd();
+
             modelBuilder.Entity<Book>()
                 .Property(b => b.BookId)
                 .ValueGeneratedOnAdd();
@@ -47,23 +49,19 @@ namespace Sandbox
                 .Property(p => p.ReaderId)
                 .ValueGeneratedOnAdd();
 
+            modelBuilder.Entity<Borrowing>()
+                .Property(b => b.Closed)
+                .HasDefaultValue(false);
+            modelBuilder.Entity<Borrowing>()
+                .Property(r => r.ReturnDate)
+                .HasDefaultValue(null);
+
+
             initializeBlogs(modelBuilder);
+
             initializeLibrary(modelBuilder);
         }
 
-        private void initializeBlogs(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Blogger>().HasData(new { BloggerId = 1, NickName = "John Doe" });
-            modelBuilder.Entity<Blogger>().HasData(new { BloggerId = 2, NickName = "Jane Doe" });
-            modelBuilder.Entity<Blogger>().HasData(new { BloggerId = 3, NickName = "Anonimous" });
-
-            modelBuilder.Entity<Blog>().HasData(new { BlogId = 1, Url = "/news" });
-            modelBuilder.Entity<Blog>().HasData(new { BlogId = 2, Url = "/events" });
-
-            modelBuilder.Entity<Post>().HasData(new { PostId = 1, Title = "Hooray", Content = "New web app with vue client", PostedOn = DateTime.Parse("2021-08-10"), BloggerId = 1, BlogId = 1 });
-            modelBuilder.Entity<Post>().HasData(new { PostId = 2, Title = "DB create", Content = "EFCore with sql", PostedOn = DateTime.Parse("2021-08-11"), BloggerId = 1, BlogId = 2 });
-            modelBuilder.Entity<Post>().HasData(new { PostId = 3, Title = "Congrats!", Content = "Testng of REST api passed successfullyt", PostedOn = DateTime.Parse("2021-08-12"), BloggerId = 2, BlogId = 1 });
-        }
 
         private void initializeLibrary(ModelBuilder modelBuilder)
         {
@@ -96,13 +94,28 @@ namespace Sandbox
             modelBuilder.Entity<Book>().HasData(new { BookId = 10, Title = "Twenty Thousand Leagues Under the Sea", AuthorId = 5, TotalAmount = 2 });
             modelBuilder.Entity<Book>().HasData(new { BookId = 11, Title = "In Search of the Castaways", AuthorId = 5, TotalAmount = 2 });
 
-            modelBuilder.Entity<Borrowing>().HasData(new { BorrowingId = 1, ReaderId = 3, BookId = 5, Date = DateTime.Parse("2021-08-10"), Term = 28 });
-            modelBuilder.Entity<Borrowing>().HasData(new { BorrowingId = 2, ReaderId = 1, BookId = 1, Date = DateTime.Parse("2021-08-15"), Term = 14 });
-            modelBuilder.Entity<Borrowing>().HasData(new { BorrowingId = 3, ReaderId = 2, BookId = 1, Date = DateTime.Parse("2021-08-15"), Term = 14 });
-            modelBuilder.Entity<Borrowing>().HasData(new { BorrowingId = 4, ReaderId = 3, BookId = 4, Date = DateTime.Parse("2021-08-15"), Term = 28 });
-            modelBuilder.Entity<Borrowing>().HasData(new { BorrowingId = 5, ReaderId = 1, BookId = 2, Date = DateTime.Parse("2021-08-20"), Term = 14 });
-            modelBuilder.Entity<Borrowing>().HasData(new { BorrowingId = 6, ReaderId = 2, BookId = 4, Date = DateTime.Parse("2021-08-20"), Term = 14 });
+            modelBuilder.Entity<Borrowing>().HasData(new { BorrowingId = 1, ReaderId = 3, BookId = 5, BorrowingDate = DateTime.Parse("2021-08-10"), Term = 28, Closed = false } );
+            modelBuilder.Entity<Borrowing>().HasData(new { BorrowingId = 2, ReaderId = 1, BookId = 1, BorrowingDate = DateTime.Parse("2021-08-15"), Term = 14, Closed = false } );
+            modelBuilder.Entity<Borrowing>().HasData(new { BorrowingId = 3, ReaderId = 2, BookId = 1, BorrowingDate = DateTime.Parse("2021-08-15"), Term = 14, Closed = false });
+            modelBuilder.Entity<Borrowing>().HasData(new { BorrowingId = 4, ReaderId = 3, BookId = 4, BorrowingDate = DateTime.Parse("2021-08-15"), Term = 28, Closed = false });
+            modelBuilder.Entity<Borrowing>().HasData(new { BorrowingId = 5, ReaderId = 1, BookId = 2, BorrowingDate = DateTime.Parse("2021-08-20"), Term = 14, Closed = false });
+            modelBuilder.Entity<Borrowing>().HasData(new { BorrowingId = 6, ReaderId = 2, BookId = 4, BorrowingDate = DateTime.Parse("2021-08-20"), Term = 14, Closed = false });
 
+        }
+
+
+        private void initializeBlogs(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Blogger>().HasData(new { BloggerId = 1, NickName = "John Doe" });
+            modelBuilder.Entity<Blogger>().HasData(new { BloggerId = 2, NickName = "Jane Doe" });
+            modelBuilder.Entity<Blogger>().HasData(new { BloggerId = 3, NickName = "Anonimous" });
+
+            modelBuilder.Entity<Blog>().HasData(new { BlogId = 1, Url = "/news" });
+            modelBuilder.Entity<Blog>().HasData(new { BlogId = 2, Url = "/events" });
+
+            modelBuilder.Entity<Post>().HasData(new { PostId = 1, Title = "Hooray", Content = "New web app with vue client", PostedOn = DateTime.Parse("2021-08-10"), BloggerId = 1, BlogId = 1 });
+            modelBuilder.Entity<Post>().HasData(new { PostId = 2, Title = "DB create", Content = "EFCore with sql", PostedOn = DateTime.Parse("2021-08-11"), BloggerId = 1, BlogId = 2 });
+            modelBuilder.Entity<Post>().HasData(new { PostId = 3, Title = "Congrats!", Content = "Testng of REST api passed successfullyt", PostedOn = DateTime.Parse("2021-08-12"), BloggerId = 2, BlogId = 1 });
         }
 
         public async Task<int> SeedBlogsData(int blogCount, int bloggerCount, int postCount)
@@ -139,5 +152,6 @@ namespace Sandbox
 
             return recordsCount;
         }
+
     }
 }
