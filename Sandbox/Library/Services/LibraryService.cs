@@ -12,6 +12,19 @@ namespace SandBox.Sandbox.Library.Services
     {
         readonly string connectionString = Startup._SandBoxDBConnectionString;
 
+        private Func<IDbConnection> ConnectionFactory { get;  }
+
+        public LibraryService()
+        {
+            ConnectionFactory = new Func<SqlConnection>(() => new SqlConnection(connectionString));
+        }
+
+
+        public LibraryService(Func<IDbConnection> factory)
+        {
+            ConnectionFactory = factory;
+        }
+
         public int DefaultBorrowingTerm => 14;
 
         public List<object> BookList()
@@ -119,24 +132,24 @@ namespace SandBox.Sandbox.Library.Services
                 "LEFT JOIN dbo.readers ON dbo.borrowings.ReaderId = dbo.readers.ReaderId";
             try
             {
-                using SqlConnection connection = new(connectionString);
-                connection.Open();
-                using SqlCommand command = new(sqlStatement, connection);
-                using SqlDataReader datareader = command.ExecuteReader();
+                using IDbConnection connection  = ConnectionFactory.Invoke();   connection.Open();
+                using IDbCommand command        = connection.CreateCommand();   command.CommandText = sqlStatement;
+                using IDataReader datareader    = command.ExecuteReader();
                 while (datareader.Read())
                 {
-                    int i = 0;
                     borrowings.Add(new
                     {
-                        BorrowingId = (int)datareader[i++],
-                        Date = (DateTime)datareader[i++],
-                        Term = (int)datareader[i++],
-                        BookId = (int)datareader[i++],
-                        Book = (string)datareader[i++],
-                        ReaderId = (int)datareader[i++],
-                        Reader = (string)datareader[i++],
-                        Closed = (bool)datareader[i++],
-                        ReturnDate = (datareader[i]==DBNull.Value)?(DateTime?)null:(DateTime)datareader[i++],
+                        BorrowingId =   datareader.GetInt32(    datareader.GetOrdinal("BorrowingId")    ),
+                        Date =          datareader.GetDateTime( datareader.GetOrdinal("BorrowingDate")  ),
+                        Term =          datareader.GetInt32(    datareader.GetOrdinal("Term")           ),
+                        BookId =        datareader.GetInt32(    datareader.GetOrdinal("BookId")         ),
+                        Book =          datareader.GetString(   datareader.GetOrdinal("Book")           ),
+                        ReaderId =      datareader.GetInt32(    datareader.GetOrdinal("ReaderId")       ),
+                        Reader =        datareader.GetString(   datareader.GetOrdinal("Reader")         ),
+                        Closed =        datareader.GetBoolean(  datareader.GetOrdinal("Closed")         ),
+                        ReturnDate =   (datareader.GetValue(    datareader.GetOrdinal("ReturnDate")     ) == DBNull.Value)
+                                       ?(DateTime?)null
+                                       :datareader.GetDateTime( datareader.GetOrdinal("ReturnDate")     ),
                     });
                 }
             }
